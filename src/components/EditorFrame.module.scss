@@ -1,0 +1,35 @@
+.EditorFrame {
+  border: none;
+  position: relative;
+}
+
+.rouge {
+  border-color: red;
+}
+
+.edit {
+  composes: rouge;
+
+  border-width: 1px;
+  border-style: solid;
+  text-align: center;
+  z-index: 1;
+}
+
+.cross {
+  --size: 27px;
+  align-items: center;
+  border-radius: 6px;
+  background: linear-gradient(145deg, #e68400, #ff9d00);
+  box-shadow: 8px 8px 16px #6e6457;
+  display: flex;
+  font-weight: bolder;
+  height: var(--size);
+  justify-content: center;
+  left: calc(100% - 18px);
+  opacity: 0.9;
+  padding: 5px;
+  position: absolute;
+  top: -20px;
+  width: var(--size);
+}

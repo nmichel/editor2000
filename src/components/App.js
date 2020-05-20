@@ -5,6 +5,10 @@ import { useDispatch } from "react-redux";
 import actions from '../actions';
 import styles from "./App.module.scss";
 import Books from './Books';
+import Components from './Components';
+
+import './Text';
+import './Image';
 
 const LangButton = ({lang}) => {
   const dispatch = useDispatch();
@@ -41,6 +45,7 @@ function App() {
     <div className={styles.App}>
       <LangSelector />
       <Books />
+      <Components />
     </div>
   );
 }
