@@ -8,7 +8,6 @@ const INITIAL_STATE = [
 ];
 
 function componentsReducer(state = INITIAL_STATE, action) {
-  console.log('action', action);
   const newState = [...state];
   const idx = state.findIndex(({ id }) => id === action.id);
 
