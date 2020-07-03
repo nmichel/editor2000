@@ -5,10 +5,14 @@ import styles from './Components.module.scss';
 import EditorFrame from './EditorFrame';
 
 const Components = () => {
-  const components = useSelector((state) => state.components);
+  const list = useSelector((state) => state.components.list);
+  const states = useSelector((state) => state.components.states);
   const { t } = useTranslation();
 
-  const renderComponents = () => components.map((props) => <EditorFrame key={props.id} {...props} />);
+  const renderComponents = () => list.map((id) => {
+    const props = states[id];
+    return <EditorFrame key={id} id={id} {...props} />
+  });
 
   return (
     <div className={styles.Components}>

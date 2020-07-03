@@ -9,6 +9,7 @@ import Components from './Components';
 
 import './Text';
 import './Image';
+import './Layout';
 
 const LangButton = ({lang}) => {
   const dispatch = useDispatch();
