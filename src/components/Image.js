@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
-import { bindComponentToName, bindEditorToName } from './registry';
+import { registerComponent } from './registry';
 import actions from '../actions';
 
 const Image = ({params, style}) => (
@@ -43,7 +43,10 @@ const TextInputField = ({url, handleChangeFn}) => {
   );
 }
 
-bindComponentToName('image', Image);
-bindEditorToName('image', ImageEditor);
+registerComponent({
+  name: 'image',
+  component: Image,
+  editor: ImageEditor
+});
 
 export default Image;

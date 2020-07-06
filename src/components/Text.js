@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from "react-redux";
-import { bindComponentToName, bindEditorToName } from './registry';
+import { registerComponent } from './registry';
 import actions from '../actions';
 
 const Text = ({params, style}) => (
@@ -34,7 +34,10 @@ const TextEditor = ({id, params, style}) => {
   );
 }
 
-bindComponentToName('text', Text);
-bindEditorToName('text', TextEditor);
+registerComponent({
+  name: 'text',
+  component: Text,
+  editor: TextEditor
+});
 
 export default Text;

@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   ],
   states: {
     [id1]: {component: 'text', params: {text: 'hello \n world!'}, style: {whiteSpace: 'pre-wrap'}},
-    [id2]: {component: 'image', params: {url: 'https://picsum.photos/id/249/200/300'}},
+    [id2]: {component: 'image', params: {url: 'https://picsum.photos/id/249/200/300'}, style: {}},
     [id3]: {component: 'text', params: {text: 'Je \n suis \n ton \ Père!'}, style: {whiteSpace: 'pre-wrap', fontSize: '20px'}},
     [id4]: {component: 'layout', params: {ids: [id2, id3]}, style: {}},
     [id5]: {component: 'layout', params: {ids: [id4, id1]}, style: {flexDirection: 'column'}},

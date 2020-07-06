@@ -1,25 +1,20 @@
 const components = {};
-const editors = {};
 
-const bindComponentToName = (name, component) => {
-  components[name] = component;
-}
+const registerComponent = (declaration) => {
+  const {name, ...props} = declaration;
+  components[name] = props;
+};
 
 const getComponentForName = (name) => {
-  return components[name];
-}
-
-const bindEditorToName = (name, editor) => {
-  editors[name] = editor;
+  return components[name].component;
 }
 
 const getEditorForName = (name) => {
-  return editors[name];
+  return components[name].editor;
 }
 
 export {
-  bindComponentToName,
+  registerComponent,
   getComponentForName,
-  bindEditorToName,
   getEditorForName
 }

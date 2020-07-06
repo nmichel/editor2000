@@ -1,9 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { bindComponentToName, bindEditorToName } from './registry';
+import { registerComponent } from './registry';
 import EditorFrame from './EditorFrame';
 import styles from './Layout.module.scss';
-import actions from '../actions';
 
 const renderSubcomponents = (ids, states) => {
   return ids.map((id) => {
@@ -33,7 +32,10 @@ const LayoutEditor = ({params, style}) => {
   );
 }
 
-bindComponentToName('layout', Layout);
-bindEditorToName('layout', LayoutEditor);
+registerComponent({
+  name: 'layout',
+  component: Layout,
+  editor: LayoutEditor
+});
 
 export default Layout;
