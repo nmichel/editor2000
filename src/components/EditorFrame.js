@@ -10,13 +10,12 @@ const Cross = ({onClick}) => {
 
   return (
     <div onClick={clickEventHandler} className={`${styles.cross}`}>X</div>
-  )};
+  )
+};
 
-const EditorFrame = ({component: name, id, params, style}) => {
+const ComponentRenderer = ({component: name, id, params, style}) => {
   const dispatch = useDispatch();
-  const activeComponentId = useSelector((state) => state.editor);
-  const edit = activeComponentId === id;
-  const component = edit ? getEditorForName(name) : getComponentForName(name);
+  const component = getComponentForName(name);
 
   const editComponent = useCallback(
     () => dispatch(actions.editor.editComponent(id)),
@@ -24,6 +23,18 @@ const EditorFrame = ({component: name, id, params, style}) => {
   )
 
   const handleStartEditionClickEvent = buildEventHandlerWrapper(editComponent);
+
+  return (
+    <div className={`${styles.EditorFrame}`} onClick={handleStartEditionClickEvent}>
+      {React.createElement(component, {style: style, id, params})}
+    </div>
+  );
+};
+
+const ComponentEditor = ({component: name, id, params, style}) => {
+  const dispatch = useDispatch();
+  const component = getEditorForName(name);
+
   const handleNoopClickEvent = buildEventHandlerWrapper(noop);
 
   const cancelEdition = useCallback(
@@ -31,25 +42,20 @@ const EditorFrame = ({component: name, id, params, style}) => {
     [dispatch]
   )
 
-  const renderComponent = () => {
-    return React.createElement(component, {style: style, id, params})
-  }
+  return (
+    <div className={`${styles.EditorFrame} ${styles.edit}`} onClick={handleNoopClickEvent}>
+      <Cross onClick={cancelEdition} />
+      {React.createElement(component, {style: style, id, params})}
+    </div>
+  );
+};
 
-  if (edit) {
-    return (
-      <div className={`${styles.EditorFrame} ${styles.edit}`} onClick={handleNoopClickEvent}>
-        <Cross onClick={cancelEdition} />
-        {renderComponent()}
-      </div>
-    );
-  }
-  else {
-    return (
-      <div className={`${styles.EditorFrame}`} onClick={handleStartEditionClickEvent}>
-        {renderComponent()}
-      </div>
-    );
-  }
-}
+const EditorFrame = (props) => {
+  const activeComponentId = useSelector((state) => state.editor);
+  const { id } = props;
+  const Component = activeComponentId === id ? ComponentEditor : ComponentRenderer;
+
+  return <Component {...props} />;
+};
 
 export default EditorFrame;
