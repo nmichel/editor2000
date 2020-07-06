@@ -25,7 +25,7 @@ const ComponentRenderer = ({component: name, id, params, style}) => {
   const handleStartEditionClickEvent = buildEventHandlerWrapper(editComponent);
 
   return (
-    <div className={`${styles.EditorFrame}`} onClick={handleStartEditionClickEvent}>
+    <div onClick={handleStartEditionClickEvent}>
       {React.createElement(component, {style: style, id, params})}
     </div>
   );
