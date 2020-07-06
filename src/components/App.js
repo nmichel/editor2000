@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from "react-redux";
 import actions from '../actions';
 import styles from "./App.module.scss";
-import Books from './Books';
 import Components from './Components';
 
 import './Text';
@@ -45,7 +44,6 @@ function App() {
   return (
     <div className={styles.App}>
       <LangSelector />
-      <Books />
       <Components />
     </div>
   );

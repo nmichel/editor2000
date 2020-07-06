@@ -1,12 +1,10 @@
 import { combineReducers } from 'redux';
 import componentsReducer from './componentsReducer';
-import booksReducer from './booksReducer';
 import langReducer from './langReducer';
 import editorReducer from './editorReducer';
 
 const rootReducer = combineReducers({
   components: componentsReducer,
-  books: booksReducer,
   lang: langReducer,
   editor: editorReducer
 });
