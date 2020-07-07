@@ -17,20 +17,21 @@
 }
 
 .cross {
-  --size: 27px;
+  --size: 10px;
   align-items: center;
   border-radius: 6px;
   background: linear-gradient(145deg, #e68400, #ff9d00);
   box-shadow: 8px 8px 16px #6e6457;
   display: flex;
+  font-size: 9px;
   font-weight: bolder;
   height: var(--size);
   justify-content: center;
-  left: calc(100% - 18px);
+  left: calc(100% - var(--size));
   opacity: 0.9;
   padding: 5px;
   position: absolute;
-  top: -20px;
+  top: calc(0px - var(--size));
   width: var(--size);
   z-index: 1;
 }

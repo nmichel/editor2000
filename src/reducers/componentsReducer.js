@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { SET_TEXT, SET_IMAGE_URL } from '../constants/action-types';
+import { SET_TEXT, SET_IMAGE_URL, SET_STYLE_VALUE } from '../constants/action-types';
 
 const id1 = uuidv4();
 const id2 = uuidv4();
@@ -15,7 +15,7 @@ const INITIAL_STATE = {
     [id1]: {component: 'text', params: {text: 'hello \n world!'}, style: {whiteSpace: 'pre-wrap'}},
     [id2]: {component: 'image', params: {url: 'https://picsum.photos/id/249/200/300'}, style: {}},
     [id3]: {component: 'text', params: {text: 'Je \n suis \n ton \ Père!'}, style: {whiteSpace: 'pre-wrap', fontSize: '20px'}},
-    [id4]: {component: 'layout', params: {ids: [id2, id3]}, style: {}},
+    [id4]: {component: 'layout', params: {ids: [id2, id3]}, style: {flexDirection: 'column'}},
     [id5]: {component: 'layout', params: {ids: [id4, id1]}, style: {flexDirection: 'column'}},
   }};
 
@@ -38,6 +38,18 @@ function componentsReducer(state = INITIAL_STATE, action) {
         ...newStates[id],
         ...action.payload, // BUG : Will override entirely params ! 
       };
+      return newState;
+    }
+
+    case SET_STYLE_VALUE: {
+      const params = action.payload.params;
+      const oldStyle = newStates[id].style;
+      const newStyle = {...oldStyle, [params.property]: params.value};
+
+      newStates[id] = {
+        ...newStates[id],
+        style: newStyle
+      }
       return newState;
     }
 

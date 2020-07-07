@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import actions from '../actions';
 import styles from "./App.module.scss";
 import Components from './Components';
+import Properties from './Properties';
 
 import './Text';
 import './Image';
@@ -45,6 +46,7 @@ function App() {
     <div className={styles.App}>
       <LangSelector />
       <Components />
+      <Properties />
     </div>
   );
 }

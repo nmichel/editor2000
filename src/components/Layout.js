@@ -35,7 +35,10 @@ const LayoutEditor = ({params, style}) => {
 registerComponent({
   name: 'layout',
   component: Layout,
-  editor: LayoutEditor
+  editor: LayoutEditor,
+  properties: {
+    flexDirection: 'column'
+  }
 });
 
 export default Layout;

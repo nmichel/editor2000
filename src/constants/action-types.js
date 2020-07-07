@@ -6,3 +6,5 @@ export const SET_IMAGE_URL = 'SET_IMAGE_URL';
 
 export const EDIT_COMPONENT = 'EDIT_COMPONENT';
 export const CANCEL_EDITION = 'CANCEL_EDITION';
+
+export const SET_STYLE_VALUE = 'SET_STYLE_VALUE';

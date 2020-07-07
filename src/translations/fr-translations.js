@@ -1,6 +1,10 @@
 const frTranslations = {
   "Editor": {
     "title": "editeur"
+  },
+
+  "Properties": {
+    "title": "propriétés"
   }
 };
   

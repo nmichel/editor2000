@@ -1,4 +1,4 @@
-import { SET_TEXT, SET_IMAGE_URL } from '../constants/action-types'; 
+import { SET_TEXT, SET_IMAGE_URL, SET_STYLE_VALUE } from '../constants/action-types'; 
 
 const setText = (id, text) => {
   return {
@@ -16,7 +16,16 @@ const setImageUrl = (id, url) => {
   };
 };
 
+const setStyleValue = (id, property, value) => {
+  return {
+    type: SET_STYLE_VALUE,
+    id,
+    payload: { params: { property, value } }
+  }
+};
+
 export default {
   setText,
-  setImageUrl
+  setImageUrl,
+  setStyleValue
 }

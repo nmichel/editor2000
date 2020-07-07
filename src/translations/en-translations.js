@@ -1,6 +1,10 @@
 const enTranslations = {
   "Editor": {
       "title": "editor"
+  },
+
+  "Properties": {
+    "title": "propriétés"
   }
 };
 
