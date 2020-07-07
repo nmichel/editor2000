@@ -34,9 +34,12 @@ const PropertyList = ({id}) => {
   return (
     <div>
       <div>{id}</div>
-      {Object.entries(style).map(([k, v]) => {
-        return <PropertyEditor key={`${id}_${k}`} id={id} k={k} v={v} />;
-      })}
+      <div>
+        {Object.entries(style).map(([k, v]) => {
+          return <PropertyEditor key={`${id}_${k}`} id={id} k={k} v={v} />;
+        })}
+        <AddPropertyPanel id={id} />
+      </div>
     </div>
   );
 };
@@ -53,5 +56,23 @@ const Properties = () => {
     </div>
   );
 };
+
+const AddPropertyPanel = ({id}) => {
+  const dispatch = useDispatch();
+  const [property, setProperty] = useState("property");
+  const [value, setValue] = useState("value");
+
+  const addProperty = () => {
+    dispatch(actions.component.addStyle(id, property, value))
+  }
+
+  return (
+    <div>
+      <input value={property} onChange={(e) => setProperty(e.target.value)} />
+      <input value={value} onChange={(e) => setValue(e.target.value)} />
+      <button onClick={addProperty}>Add</button>
+    </div>
+  );
+}
 
 export default Properties;
