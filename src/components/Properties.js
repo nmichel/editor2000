@@ -19,7 +19,7 @@ const PropertyEditor = ({id, k, v}) => {
   }
 
   return (
-    <div>
+    <div className={`${styles.PropertyEditor}`}>
       <span>{k}</span>
       <input value={value} onKeyPress={handleOnValidate} onChange={handleOnChange} />
     </div>
@@ -32,7 +32,7 @@ const PropertyList = ({id}) => {
   const style = component.style;
 
   return (
-    <div className={styles.Properties}>
+    <div>
       <div>{id}</div>
       {Object.entries(style).map(([k, v]) => {
         return <PropertyEditor key={`${id}_${k}`} id={id} k={k} v={v} />;
@@ -46,12 +46,12 @@ const Properties = () => {
   const activeComponentId = useSelector((state) => state.editor);
 //  <h1>{t("Properties.title")}</h1>
 
-  if (activeComponentId) {
-    return <PropertyList id={activeComponentId} />
-  }
-  else {
-    return null;
-  }
+  return (
+    <div className={styles.Properties}>
+      {activeComponentId && <PropertyList id={activeComponentId} />}
+      {!activeComponentId && <span>{t("Properties.select_component")}</span>}
+    </div>
+  );
 };
 
 export default Properties;

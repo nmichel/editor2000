@@ -4,7 +4,8 @@ const frTranslations = {
   },
 
   "Properties": {
-    "title": "propriétés"
+    "title": "propriétés",
+    "select_component": "sélectionnez un composant"
   }
 };
   

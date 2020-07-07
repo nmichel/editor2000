@@ -4,7 +4,8 @@ const enTranslations = {
   },
 
   "Properties": {
-    "title": "propriétés"
+    "title": "propriétés",
+    "select_component": "select a component"
   }
 };
 
