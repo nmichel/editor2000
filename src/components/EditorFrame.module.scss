@@ -1,18 +1,12 @@
+$edition-indicator-color: #ff9d00;
+
 .EditorFrame {
   border: none;
   position: relative;
 }
 
-.rouge {
-  border-color: red;
-}
-
 .edit {
-  composes: rouge;
-
-  border-width: 1px;
-  border-style: solid;
-  text-align: center;
+  outline: 1px dashed $edition-indicator-color;
   z-index: 1;
 }
 
@@ -20,7 +14,7 @@
   --size: 10px;
   align-items: center;
   border-radius: 6px;
-  background: linear-gradient(145deg, #e68400, #ff9d00);
+  background: $edition-indicator-color;
   box-shadow: 8px 8px 16px #6e6457;
   display: flex;
   font-size: 9px;
