@@ -18,10 +18,15 @@ const PropertyEditor = ({id, k, v}) => {
     setValue(event.target.value);
   }
 
+  const deleteProperty = () => {
+    dispatch(actions.component.deleteStyle(id, k));
+  }
+
   return (
     <div className={`${styles.PropertyEditor}`}>
       <span>{k}</span>
       <input value={value} onKeyPress={handleOnValidate} onChange={handleOnChange} />
+      <button onClick={deleteProperty}>X</button>
     </div>
   );
 }

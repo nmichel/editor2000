@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { SET_TEXT, SET_IMAGE_URL, SET_STYLE_VALUE, ADD_STYLE } from '../constants/action-types';
+import { SET_TEXT, SET_IMAGE_URL, SET_STYLE_VALUE, ADD_STYLE, DELETE_STYLE } from '../constants/action-types';
 
 const id1 = uuidv4();
 const id2 = uuidv4();
@@ -57,6 +57,18 @@ function componentsReducer(state = INITIAL_STATE, action) {
       const params = action.payload.params;
       const oldStyle = newStates[id].style;
       const newStyle = {...oldStyle, [params.property]: params.value};
+
+      newStates[id] = {
+        ...newStates[id],
+        style: newStyle
+      }
+      return newState;
+    }
+
+    case DELETE_STYLE: {
+      const params = action.payload.params;
+      const oldStyle = newStates[id].style;
+      const {[params.property]: _, ...newStyle} = oldStyle;
 
       newStates[id] = {
         ...newStates[id],

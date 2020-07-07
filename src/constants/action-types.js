@@ -9,3 +9,4 @@ export const CANCEL_EDITION = 'CANCEL_EDITION';
 
 export const SET_STYLE_VALUE = 'SET_STYLE_VALUE';
 export const ADD_STYLE = 'ADD_STYLE';
+export const DELETE_STYLE = 'DELETE_STYLE';
