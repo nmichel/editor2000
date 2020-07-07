@@ -5,8 +5,13 @@ import { buildEventHandlerWrapper, noop } from '../misc/utils';
 import styles from './EditorFrame.module.scss';
 import actions from '../actions';
 
-const Cross = ({onClick}) => {
-  const clickEventHandler = buildEventHandlerWrapper(onClick);
+const Cross = () => {
+  const dispatch = useDispatch();
+  const cancelEdition = useCallback(
+    () => dispatch(actions.editor.cancelEdition()),
+    [dispatch]
+  )
+  const clickEventHandler = buildEventHandlerWrapper(cancelEdition);
 
   return (
     <div onClick={clickEventHandler} className={`${styles.cross}`}>X</div>
@@ -32,19 +37,12 @@ const ComponentRenderer = ({component: name, id, params, style}) => {
 };
 
 const ComponentEditor = ({component: name, id, params, style}) => {
-  const dispatch = useDispatch();
   const component = getEditorForName(name);
-
   const handleNoopClickEvent = buildEventHandlerWrapper(noop);
-
-  const cancelEdition = useCallback(
-    () => dispatch(actions.editor.cancelEdition()),
-    [dispatch]
-  )
 
   return (
     <div className={`${styles.EditorFrame} ${styles.edit}`} onClick={handleNoopClickEvent}>
-      <Cross onClick={cancelEdition} />
+      <Cross />
       {React.createElement(component, {style: style, id, params})}
     </div>
   );
