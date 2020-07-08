@@ -1,0 +1,15 @@
+.toolbar_button_group {
+  display: flex;
+  flex-direction: row;
+}
+
+.toolbar_button {
+  --size: 20px;
+
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  height: var(--size);
+  justify-content: center;
+  min-width: var(--size);
+}
