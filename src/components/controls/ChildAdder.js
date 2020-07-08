@@ -1,0 +1,44 @@
+import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {useTranslation} from 'react-i18next';
+import {getComponentNameList} from '../registry';
+import actions from '../../actions';
+import styles from '../common.module.scss';
+
+const TypeSelector = ({chooseComponent})  => {
+  const {t} = useTranslation();
+  return (
+    <select onChange={(e) => chooseComponent(e.target.value)}>
+      <option value="">{t('choose a component')}</option>
+      {getComponentNameList().map((name, idx) => <option key={idx} value={name}>{name}</option>)}
+    </select>
+  );
+}
+const ChildAdder = ({id}) => {
+  const dispatch = useDispatch();
+  const [componentName, setComponentName] = useState('');
+  const chooseComponent = (name) => {
+    setComponentName(name);
+  }
+
+  const isValidComponent = () => componentName !== '';
+
+  const prependComponent = () => dispatch(actions.component.prependComponent(id, componentName));
+  const appendComponent = () => dispatch(actions.component.appendComponent(id, componentName));
+
+  return (
+    <div className={`${styles.toolbar_button_group}`}>
+      <div className={`${styles.toolbar_button} ${isValidComponent() ? '' : styles.inactive}`} onClick={isValidComponent() ? prependComponent : undefined}>
+        {"<<"}
+      </div>
+      <div className={`${styles.toolbar_button}`}>
+        <TypeSelector chooseComponent={chooseComponent} />
+      </div>
+      <div className={`${styles.toolbar_button} ${isValidComponent() ? '' : styles.inactive}`} onClick={isValidComponent() ? appendComponent : undefined}>
+        {">>"}
+      </div>
+    </div>
+  );
+};
+
+export default ChildAdder;

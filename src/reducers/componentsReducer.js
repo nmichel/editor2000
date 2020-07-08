@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { SET_TEXT, SET_IMAGE_URL, SET_STYLE_VALUE, ADD_STYLE, DELETE_STYLE } from '../constants/action-types';
+import {getDefaultParamsForName} from '../components/registry';
+
+import { SET_TEXT, SET_IMAGE_URL, SET_STYLE_VALUE, ADD_STYLE, DELETE_STYLE, APPEND_COMPONENT, PREPEND_COMPONENT } from '../constants/action-types';
 
 const id1 = uuidv4();
 const id2 = uuidv4();
@@ -74,6 +76,44 @@ function componentsReducer(state = INITIAL_STATE, action) {
         ...newStates[id],
         style: newStyle
       }
+      return newState;
+    }
+
+    case APPEND_COMPONENT: {
+      const params = action.payload.params;
+      const targetComponentType = (state.states[id] && state.states[id].component)|| "";
+      if (targetComponentType !== 'layout') {
+        return state;
+      }
+
+      const newComponentId = uuidv4();
+      newStates[newComponentId] = {...getDefaultParamsForName(params.name)};
+
+      const newIds = [...newStates[id].params.ids, newComponentId];
+      newStates[id] = {
+        ...newStates[id],
+        params: {ids: newIds}
+      }
+
+      return newState;
+    }
+
+    case PREPEND_COMPONENT: {
+      const params = action.payload.params;
+      const targetComponentType = (state.states[id] && state.states[id].component)|| "";
+      if (targetComponentType !== 'layout') {
+        return state;
+      }
+
+      const newComponentId = uuidv4();
+      newStates[newComponentId] = {...getDefaultParamsForName(params.name)};
+
+      const newIds = [newComponentId, ...newStates[id].params.ids];
+      newStates[id] = {
+        ...newStates[id],
+        params: {ids: newIds}
+      }
+
       return newState;
     }
 

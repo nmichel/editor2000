@@ -37,7 +37,14 @@ const TextEditor = ({id, params, style}) => {
 registerComponent({
   name: 'text',
   component: Text,
-  editor: TextEditor
+  editor: TextEditor,
+  default: {
+    component: 'text',
+    params: {
+      text: ' ++++++ '
+    },
+    style: {}
+  }
 });
 
 export default Text;

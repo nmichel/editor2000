@@ -13,3 +13,7 @@
   justify-content: center;
   min-width: var(--size);
 }
+
+.inactive {
+  cursor: not-allowed;
+}

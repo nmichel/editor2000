@@ -1,4 +1,4 @@
-import { SET_TEXT, SET_IMAGE_URL, SET_STYLE_VALUE, ADD_STYLE, DELETE_STYLE } from '../constants/action-types'; 
+import { SET_TEXT, SET_IMAGE_URL, SET_STYLE_VALUE, ADD_STYLE, DELETE_STYLE, APPEND_COMPONENT, PREPEND_COMPONENT } from '../constants/action-types'; 
 
 const setText = (id, text) => {
   return {
@@ -40,10 +40,28 @@ const deleteStyle = (id, property) => {
   }
 };
 
+const appendComponent = (id, name) => {
+  return {
+    type: APPEND_COMPONENT,
+    id,
+    payload: { params: { name } }
+  }
+}
+
+const prependComponent = (id, name) => {
+  return {
+    type: PREPEND_COMPONENT,
+    id,
+    payload: { params: { name } }
+  }
+}
+
 export default {
   setText,
   setImageUrl,
   setStyleValue,
   addStyle,
-  deleteStyle
+  deleteStyle,
+  appendComponent,
+  prependComponent
 }

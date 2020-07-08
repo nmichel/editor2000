@@ -1,8 +1,9 @@
 import React from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { registerComponent } from './registry';
+import {useSelector} from "react-redux";
+import {registerComponent} from './registry';
 import EditorFrame from './EditorFrame';
 import styles from './Layout.module.scss';
+import ChildAdder from './controls/ChildAdder';
 
 const renderSubcomponents = (ids, states) => {
   return ids.map((id) => {
@@ -23,7 +24,6 @@ const Layout = ({params, style}) => {
 
 const LayoutEditor = ({params, style}) => {
   const states = useSelector((state) => state.components.states);
-  const dispatch = useDispatch();
 
   return (
     <div className={`${styles.Layout}`} style={style}>
@@ -36,8 +36,16 @@ registerComponent({
   name: 'layout',
   component: Layout,
   editor: LayoutEditor,
+  controls: [ChildAdder],
   properties: {
     flexDirection: 'column'
+  },
+  default: {
+    component: 'layout',
+    params: {
+      ids: []
+    },
+    style: {}
   }
 });
 

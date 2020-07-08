@@ -46,7 +46,14 @@ const TextInputField = ({url, handleChangeFn}) => {
 registerComponent({
   name: 'image',
   component: Image,
-  editor: ImageEditor
+  editor: ImageEditor,
+  default: {
+    component: 'image',
+    params: {
+      url: 'https://picsum.photos/id/249/200/300'
+    },
+    style: {}
+  }
 });
 
 export default Image;

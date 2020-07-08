@@ -21,10 +21,13 @@ const getControlsForName = (name) => getRecordForName(name).controls;
 
 const getComponentNameList = () => Object.keys(components);
 
+const getDefaultParamsForName = (name) => getRecordForName(name).default;
+
 export {
   registerComponent,
   getComponentForName,
   getEditorForName,
   getControlsForName,
-  getComponentNameList
+  getComponentNameList,
+  getDefaultParamsForName
 }
