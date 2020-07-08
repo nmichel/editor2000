@@ -1,4 +1,4 @@
-import { SET_TEXT, SET_IMAGE_URL, SET_STYLE_VALUE, ADD_STYLE, DELETE_STYLE, APPEND_COMPONENT, PREPEND_COMPONENT } from '../constants/action-types'; 
+import { SET_TEXT, SET_IMAGE_URL, SET_STYLE_VALUE, ADD_STYLE, DELETE_STYLE, APPEND_COMPONENT, PREPEND_COMPONENT, DELETE_COMPONENT } from '../constants/action-types'; 
 
 const setText = (id, text) => {
   return {
@@ -56,6 +56,14 @@ const prependComponent = (id, name) => {
   }
 }
 
+const deleteComponent = (id, name) => {
+  return {
+    type: DELETE_COMPONENT,
+    id,
+    payload: {}
+  }
+}
+
 export default {
   setText,
   setImageUrl,
@@ -63,5 +71,6 @@ export default {
   addStyle,
   deleteStyle,
   appendComponent,
-  prependComponent
+  prependComponent,
+  deleteComponent
 }

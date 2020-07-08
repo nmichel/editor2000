@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import {getDefaultParamsForName} from '../components/registry';
 
-import { SET_TEXT, SET_IMAGE_URL, SET_STYLE_VALUE, ADD_STYLE, DELETE_STYLE, APPEND_COMPONENT, PREPEND_COMPONENT } from '../constants/action-types';
+import { SET_TEXT, SET_IMAGE_URL, SET_STYLE_VALUE, ADD_STYLE, DELETE_STYLE, APPEND_COMPONENT, PREPEND_COMPONENT, DELETE_COMPONENT } from '../constants/action-types';
 
 const id1 = uuidv4();
 const id2 = uuidv4();
@@ -114,6 +114,22 @@ function componentsReducer(state = INITIAL_STATE, action) {
         params: {ids: newIds}
       }
 
+      return newState;
+    }
+
+    case DELETE_COMPONENT: {
+      delete newStates[id];
+      Object.keys(newStates).forEach((k) => {
+        const componentState = newStates[k];
+        if (componentState.params.ids !== undefined) {
+          const ids = componentState.params.ids
+          const idx = ids.indexOf(id)
+          if (idx > -1) {
+            const newIds = [...ids.slice(0, idx), ...ids.slice(idx+1)]
+            newStates[k].params.ids = newIds;
+          }
+        }
+      })
       return newState;
     }
 
