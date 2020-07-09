@@ -11,24 +11,22 @@ $edition-indicator-color: #ff9d00;
 }
 
 .Toolbar {
-  --height: 10px;
-
-  align-items: center;
+  align-items: strech;
   background: #ffdea8;
   box-shadow: 8px 8px 16px #6e6457;
   display: flex;
   flex-direction: row;
   font-size: 9px;
-  height: var(--size);
   opacity: 0.9;
   padding: 5px;
   position: absolute;
-  top: calc(0px - var(--size));
   z-index: 1;
 }
 
 .tool {
+  align-items: center;
   background: $edition-indicator-color;
+  display: flex;
 
   &:first-child {
     border-top-left-radius: 3px;
@@ -41,7 +39,11 @@ $edition-indicator-color: #ff9d00;
   }
 
   &:not(:last-child) {
-    padding-right: 5px;
+    &::after {
+      content: "";
+      border-right: 1px solid #c67306;
+      height: 60%;
+    }
   }
 }
 

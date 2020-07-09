@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
+import {FaStepBackward, FaStepForward} from 'react-icons/fa';
 import {getComponentNameList} from '../registry';
 import actions from '../../actions';
 import styles from '../common.module.scss';
@@ -14,6 +15,7 @@ const TypeSelector = ({chooseComponent})  => {
     </select>
   );
 }
+
 const ChildAdder = ({id}) => {
   const dispatch = useDispatch();
   const [componentName, setComponentName] = useState('');
@@ -27,15 +29,18 @@ const ChildAdder = ({id}) => {
   const appendComponent = () => dispatch(actions.component.appendComponent(id, componentName));
 
   return (
-    <div className={`${styles.toolbar_button_group}`}>
-      <div className={`${styles.toolbar_button} ${isValidComponent() ? '' : styles.inactive}`} onClick={isValidComponent() ? prependComponent : undefined}>
-        {"<<"}
-      </div>
-      <div className={`${styles.toolbar_button}`}>
-        <TypeSelector chooseComponent={chooseComponent} />
-      </div>
-      <div className={`${styles.toolbar_button} ${isValidComponent() ? '' : styles.inactive}`} onClick={isValidComponent() ? appendComponent : undefined}>
-        {">>"}
+    <div className={`${styles.toolbar_button_section}`}>
+      <div className={`${styles.toolbar_button_section_title}`}>add</div>
+      <div className={`${styles.toolbar_button_group}`}>
+        <div className={`${styles.toolbar_button} ${isValidComponent() ? '' : styles.inactive}`} onClick={isValidComponent() ? prependComponent : undefined}>
+          <FaStepBackward />
+        </div>
+        <div className={`${styles.toolbar_button}`}>
+          <TypeSelector chooseComponent={chooseComponent} />
+        </div>
+        <div className={`${styles.toolbar_button} ${isValidComponent() ? '' : styles.inactive}`} onClick={isValidComponent() ? appendComponent : undefined}>
+        <FaStepForward />
+        </div>
       </div>
     </div>
   );

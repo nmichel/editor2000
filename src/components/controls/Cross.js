@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { FaTimesCircle } from 'react-icons/fa';
 import { buildEventHandlerWrapper } from '../../misc/utils';
 import actions from '../../actions';
 import commonStyle from '../common.module.scss';
@@ -11,7 +12,7 @@ const Cross = () => {
   const clickEventHandler = buildEventHandlerWrapper(cancelEdition);
 
   return (
-    <div onClick={clickEventHandler} className={`${commonStyle.toolbar_button} ${styles.Cross}`}>X</div>
+    <div onClick={clickEventHandler} className={`${commonStyle.toolbar_button} ${styles.Cross}`}><FaTimesCircle /></div>
   )
 };
   
