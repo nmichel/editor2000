@@ -1,19 +1,4 @@
-import { EDIT_COMPONENT, CANCEL_EDITION } from '../constants/action-types'; 
-
-const editComponent = (id) => {
-  return { 
-    type: EDIT_COMPONENT,
-    id
-  };
-};
-
-const cancelEdition = () => {
-  return {
-    type: CANCEL_EDITION
-  };
-};
+import * as ActionTypes from '../constants/action-types'; 
 
 export default {
-  editComponent,
-  cancelEdition
 }

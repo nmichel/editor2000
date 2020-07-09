@@ -17,6 +17,7 @@ const TypeSelector = ({chooseComponent})  => {
 }
 
 const ChildAdder = ({id}) => {
+  const {t} = useTranslation();
   const dispatch = useDispatch();
   const [componentName, setComponentName] = useState('');
   const chooseComponent = (name) => {
@@ -30,7 +31,7 @@ const ChildAdder = ({id}) => {
 
   return (
     <div className={`${styles.toolbar_button_section}`}>
-      <div className={`${styles.toolbar_button_section_title}`}>add</div>
+      <div className={`${styles.toolbar_button_section_title}`}>{t('add')}</div>
       <div className={`${styles.toolbar_button_group}`}>
         <div className={`${styles.toolbar_button} ${isValidComponent() ? '' : styles.inactive}`} onClick={isValidComponent() ? prependComponent : undefined}>
           <FaStepBackward />

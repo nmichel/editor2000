@@ -51,7 +51,7 @@ const PropertyList = ({id}) => {
 
 const Properties = () => {
   const { t } = useTranslation();
-  const activeComponentId = useSelector((state) => state.editor);
+  const activeComponentId = useSelector((state) => state.components.active);
 //  <h1>{t("Properties.title")}</h1>
 
   return (

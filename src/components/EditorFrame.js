@@ -11,7 +11,7 @@ const ComponentRenderer = ({component: name, id, params, style}) => {
   const dispatch = useDispatch();
   const component = getComponentForName(name);
 
-  const editComponent = () => dispatch(actions.editor.editComponent(id));
+  const editComponent = () => dispatch(actions.component.editComponent(id));
   const handleStartEditionClickEvent = buildEventHandlerWrapper(editComponent);
 
   return (
@@ -35,7 +35,7 @@ const ComponentEditor = (props) => {
 };
 
 const EditorFrame = (props) => {
-  const activeComponentId = useSelector((state) => state.editor);
+  const activeComponentId = useSelector((state) => state.components.active);
   const { id } = props;
   const Component = activeComponentId === id ? ComponentEditor : ComponentRenderer;
 

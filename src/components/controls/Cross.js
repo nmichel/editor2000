@@ -8,7 +8,7 @@ import styles from '../EditorFrame.module.scss';
 
 const Cross = () => {
   const dispatch = useDispatch();
-  const cancelEdition = () => dispatch(actions.editor.cancelEdition());
+  const cancelEdition = () => dispatch(actions.component.cancelEdition());
   const clickEventHandler = buildEventHandlerWrapper(cancelEdition);
 
   return (

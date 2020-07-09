@@ -1,5 +1,6 @@
 import Cross from '../components/controls/Cross';
 import Delete from '../components/controls/Delete';
+import Navigator from '../components/controls/Navigator';
 
 const components = {};
 window.components = components;
@@ -7,7 +8,7 @@ window.components = components;
 const registerComponent = (declaration) => {
   const {name, ...props} = declaration;
   let {controls = [], ...rest} = props;
-  controls = [...controls, Cross, Delete];
+  controls = [...controls, Navigator, Delete, Cross];
 
   components[name] = {controls, ...rest};
 };
