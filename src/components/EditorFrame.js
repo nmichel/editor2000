@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {FaHamburger} from 'react-icons/fa';
 import { getComponentForName, getEditorForName, getControlsForName } from './registry';
 import { buildEventHandlerWrapper, noop } from '../misc/utils';
+import commonStyle from './common.module.scss';
 import styles from './EditorFrame.module.scss';
 import actions from '../actions';
 
@@ -41,6 +43,7 @@ const EditorFrame = (props) => {
 };
 
 const Toolbar = (props) => {
+  const [showBar, setShowBar] = useState(true);
   const {component: name, id} = props;
   const controls = getControlsForName(name);
 
@@ -52,7 +55,10 @@ const Toolbar = (props) => {
 
   return (
     <div className={`${styles.Toolbar}`}>
-      {renderTools()}
+      <div className={`${commonStyle.toolbar_button} ${showBar ? commonStyle.rotate : ""}`}><FaHamburger onClick={() => setShowBar(!showBar)} /></div>
+      <div className={`${styles.controls} ${showBar ? styles.unfold : styles.fold}`}>
+        {renderTools()}
+      </div>
     </div>
   );
 };

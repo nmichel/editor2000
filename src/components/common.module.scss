@@ -18,11 +18,17 @@
   cursor: pointer;
   display: flex;
   font-size: 15px;
-  height: var(--size);
   justify-content: center;
+  min-height: var(--size);
   min-width: var(--size);
+  transition-duration: 0.3s;
+  transition-property: transform;
 }
 
 .inactive {
   cursor: not-allowed;
+}
+
+.rotate {
+  transform: rotate(-90deg);
 }
