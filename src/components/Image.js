@@ -15,8 +15,12 @@ const ImageEditor = (props) => {
     dispatch(actions.component.setImageUrl(id, url));
   }
 
+  const style = {
+    position: 'relative'
+  }
+
   return (
-    <div>
+    <div style={style}>
       <Image {...props} />
       <TextInputField url={props.params.url} handleChangeFn={updateUrl} />
     </div>
@@ -36,10 +40,19 @@ const TextInputField = ({url, handleChangeFn}) => {
     }
   }
 
+  const style = {
+    position: 'absolute',
+    bottom: '20px',
+    left: '50%',
+    transform: 'translate(-50%, 0)',
+    borderRadius: '0',
+    padding: '10px',
+    outline: 'none',
+    border: '1px dashed'
+  };
+
   return (
-    <div>
-      <input type="text" value={text} onChange={handleChange} onKeyDown={handleKeyDown} />
-    </div>
+    <input style={style} type="text" value={text} onChange={handleChange} onKeyDown={handleKeyDown} />
   );
 }
 
