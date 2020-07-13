@@ -3,13 +3,13 @@ import { useDispatch } from "react-redux";
 import { registerComponent } from './registry';
 import actions from '../actions';
 
-const Text = ({params, style}) => (
-  <div style={style}>
+const Text = ({params, ...rest}) => (
+  <div  {...rest}>
     {params.text}
   </div>
 );
 
-const TextEditor = ({id, params, style}) => {
+const TextEditor = ({id, params, ...rest}) => {
   const dispatch = useDispatch();
 
   const updateText = (text) => {
@@ -28,7 +28,7 @@ const TextEditor = ({id, params, style}) => {
   }
 
   return (
-    <div contentEditable="true" suppressContentEditableWarning="true" style={style} onBlur={(e)=>{updateText(e.currentTarget.innerHTML)}}>
+    <div contentEditable="true" suppressContentEditableWarning="true" onBlur={(e)=>{updateText(e.currentTarget.innerHTML)}} {...rest}>
       {params.text}
     </div>
   );

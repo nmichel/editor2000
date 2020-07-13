@@ -15,9 +15,7 @@ const ComponentRenderer = ({component: name, id, params, style}) => {
   const handleStartEditionClickEvent = buildEventHandlerWrapper(editComponent);
 
   return (
-    <div onClick={handleStartEditionClickEvent}>
-      {React.createElement(component, {style: style, id, params})}
-    </div>
+    React.createElement(component, {style, id, params, onClick: handleStartEditionClickEvent})
   );
 };
 
@@ -29,7 +27,7 @@ const ComponentEditor = (props) => {
   return (
     <div className={`${styles.EditorFrame} ${styles.edit}`} onClick={handleNoopClickEvent}>
       <Toolbar {...props} />
-      {React.createElement(component, {style: style, id, params})}
+      {React.createElement(component, {style, id, params})}
     </div>
   );
 };

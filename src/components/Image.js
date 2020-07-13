@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 import { registerComponent } from './registry';
 import actions from '../actions';
 
-const Image = ({params, style}) => (
-  <img src={`${params.url}`} alt="img" style={style} />
+const Image = ({params, ...rest}) => (
+  <img src={`${params.url}`} alt="img" {...rest} />
 );
 
 const ImageEditor = (props) => {
