@@ -1,3 +1,6 @@
+export const LOAD = 'LOAD';
+export const SAVE = 'SAVE';
+
 export const SET_LANG = 'SET_LANG';
 
 export const SET_TEXT = 'SET_TEXT';

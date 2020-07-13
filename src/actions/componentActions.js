@@ -1,5 +1,11 @@
 import * as ActionTypes from '../constants/action-types'; 
 
+const load = () => {
+  return {
+    type: ActionTypes.LOAD
+  }
+}
+
 const editComponent = (id) => {
   return { 
     type: ActionTypes.EDIT_COMPONENT,
@@ -106,6 +112,7 @@ const navigateDown = (id) => {
 }
 
 export default {
+  load,
   editComponent,
   cancelEdition,
   setText,

@@ -16,7 +16,7 @@ const INITIAL_STATE = {
   states: {
     [id1]: {component: 'text', parent: id5, params: {text: 'hello \n world!'}, style: {whiteSpace: 'pre-wrap'}},
     [id2]: {component: 'image', parent: id4, params: {url: 'https://picsum.photos/id/249/200/300'}, style: {}},
-    [id3]: {component: 'text', parent: id4, params: {text: 'Je \n suis \n ton \ Père!'}, style: {whiteSpace: 'pre-wrap', fontSize: '20px'}},
+    [id3]: {component: 'text', parent: id4, params: {text: 'Je \n suis \n ton \n Père!'}, style: {whiteSpace: 'pre-wrap', fontSize: '20px'}},
     [id4]: {component: 'layout', parent: id5, params: {ids: [id2, id3]}, style: {flexDirection: 'column'}},
     [id5]: {component: 'layout', params: {ids: [id4, id1]}, style: {flexDirection: 'column'}},
   }};
@@ -27,6 +27,20 @@ function componentsReducer(state = INITIAL_STATE, action) {
   const id = action.id
 
   switch (action.type) {
+    case ActionTypes.LOAD: {
+      const savedState = localStorage.getItem('component_editor');
+      if (!savedState) {
+        return INITIAL_STATE;
+      }
+
+      return JSON.parse(savedState);
+    }
+
+    case ActionTypes.SAVE: {
+      localStorage.setItem('component_editor', JSON.stringify(state));
+      return state;
+    }
+
     case ActionTypes.EDIT_COMPONENT: {
       newState.active = id;
       return newState;
