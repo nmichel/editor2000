@@ -1,0 +1,47 @@
+$edition-indicator-color: #ff9d00;
+
+.Toolbar {
+  background: #ffdea8;
+  box-shadow: 8px 8px 16px #6e6457;
+  display: flex;
+  flex-direction: row;
+  font-size: 9px;
+  opacity: 0.9;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  transition: width 2s;
+}
+
+.controls {
+  display: flex;
+}
+
+.fold {
+  overflow: hidden;
+  width: 0;
+}
+
+.tool {
+  align-items: center;
+  background: $edition-indicator-color;
+  display: flex;
+
+  &:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  &:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+
+  &:not(:last-child) {
+    &::after {
+      content: "";
+      border-right: 1px solid #c67306;
+      height: 60%;
+    }
+  }
+}

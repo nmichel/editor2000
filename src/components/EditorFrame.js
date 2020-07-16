@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {FaHamburger} from 'react-icons/fa';
-import { getComponentForName, getEditorForName, getControlsForName } from './registry';
-import { buildEventHandlerWrapper, noop } from '../misc/utils';
-import commonStyle from './common.module.scss';
+import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {getComponentForName, getEditorForName} from './registry';
+import {buildEventHandlerWrapper, noop} from '../misc/utils';
+import Toolbar from './Toolbar';
 import styles from './EditorFrame.module.scss';
 import actions from '../actions';
 
@@ -38,27 +37,6 @@ const EditorFrame = (props) => {
   const Component = activeComponentId === id ? ComponentEditor : ComponentRenderer;
 
   return <Component {...props} />;
-};
-
-const Toolbar = (props) => {
-  const [showBar, setShowBar] = useState(true);
-  const {component: name, id} = props;
-  const controls = getControlsForName(name);
-
-  const renderTools = () =>
-    controls.map((c, idx) =>
-      <div className={`${styles.tool}`} key={idx}>
-        {React.createElement(c, {id})}
-      </div>);
-
-  return (
-    <div className={`${styles.Toolbar}`}>
-      <div className={`${commonStyle.toolbar_button} ${showBar ? commonStyle.rotate : ""}`}><FaHamburger onClick={() => setShowBar(!showBar)} /></div>
-      <div className={`${styles.controls} ${showBar ? styles.unfold : styles.fold}`}>
-        {renderTools()}
-      </div>
-    </div>
-  );
 };
 
 export default EditorFrame;
