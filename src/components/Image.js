@@ -8,21 +8,22 @@ const Image = ({params, ...rest}) => (
 );
 
 const ImageEditor = (props) => {
-  const {id} = props;
+  const {id, params, style, ...rest} = props;
   const dispatch = useDispatch();
 
   const updateUrl = (url) => {
     dispatch(actions.component.setImageUrl(id, url));
   }
 
-  const style = {
+  const wrapperStyle = {
+    display: 'flex',
     position: 'relative'
-  }
+  };
 
   return (
-    <div style={style}>
-      <Image {...props} />
-      <TextInputField url={props.params.url} handleChangeFn={updateUrl} />
+    <div style={wrapperStyle} {...rest} >
+      <Image params={params} style={style} />
+      <TextInputField url={params.url} handleChangeFn={updateUrl} />
     </div>
   );
 }
@@ -48,7 +49,8 @@ const TextInputField = ({url, handleChangeFn}) => {
     borderRadius: '0',
     padding: '10px',
     outline: 'none',
-    border: '1px dashed'
+    border: '1px dashed',
+    zIndex: 2
   };
 
   return (

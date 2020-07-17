@@ -2,7 +2,6 @@ import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {getComponentForName, getEditorForName} from './registry';
 import {buildEventHandlerWrapper, noop} from '../misc/utils';
-import Toolbar from './Toolbar';
 import styles from './EditorFrame.module.scss';
 import actions from '../actions';
 
@@ -24,10 +23,7 @@ const ComponentEditor = (props) => {
   const handleNoopClickEvent = buildEventHandlerWrapper(noop);
 
   return (
-    <div className={`${styles.EditorFrame} ${styles.edit}`} onClick={handleNoopClickEvent}>
-      <Toolbar {...props} />
-      {React.createElement(component, {style, id, params})}
-    </div>
+    React.createElement(component, {className: `${styles.EditorFrame} ${styles.edit}`, style, id, params, onClick: handleNoopClickEvent})
   );
 };
 

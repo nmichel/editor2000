@@ -12,21 +12,21 @@ const renderSubcomponents = (ids, states) => {
   })
 }
 
-const Layout = ({params, style}) => {
+const Layout = ({params, ...rest}) => {
   const states = useSelector((state) => state.components.states);
 
   return (
-    <div className={`${styles.Layout}`} style={style}>
+    <div className={`${styles.Layout}`} {...rest}>
       {renderSubcomponents(params.ids, states)}
     </div>
   );
 };
 
-const LayoutEditor = ({params, style}) => {
+const LayoutEditor = ({params, className = '', ...rest}) => {
   const states = useSelector((state) => state.components.states);
 
   return (
-    <div className={`${styles.Layout}`} style={style}>
+    <div className={`${className} ${styles.Layout}`} {...rest}>
       {renderSubcomponents(params.ids, states)}
     </div>
   );
@@ -38,14 +38,18 @@ registerComponent({
   editor: LayoutEditor,
   controls: [ChildAdder],
   properties: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   default: {
     component: 'layout',
     params: {
       ids: []
     },
-    style: {}
+    style: {
+      flexDirection: 'column',
+      alignItems: 'center'
+    }
   }
 });
 
