@@ -7,7 +7,7 @@ const Image = ({params, ...rest}) => (
   <img src={`${params.url}`} alt="img" {...rest} />
 );
 
-const ImageEditor = (props) => {
+const ImageEditor = React.forwardRef((props, ref) => {
   const {id, params, style, ...rest} = props;
   const dispatch = useDispatch();
 
@@ -21,12 +21,12 @@ const ImageEditor = (props) => {
   };
 
   return (
-    <div style={wrapperStyle} {...rest} >
+    <div style={wrapperStyle} ref={ref} {...rest} >
       <Image params={params} style={style} />
       <TextInputField url={params.url} handleChangeFn={updateUrl} />
     </div>
   );
-}
+});
 
 const TextInputField = ({url, handleChangeFn}) => {
   const [text, setText] = useState(url);

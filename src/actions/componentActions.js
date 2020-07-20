@@ -111,6 +111,13 @@ const navigateDown = (id) => {
   }
 }
 
+const setOverlayTarget = (target) => {
+  return {
+    type: ActionTypes.SET_OVERLAY_TARGET,
+    target
+  }
+}
+
 export default {
   load,
   editComponent,
@@ -126,5 +133,6 @@ export default {
   navigatePrev,
   navigateNext,
   navigateUp,
-  navigateDown
+  navigateDown,
+  setOverlayTarget
 }

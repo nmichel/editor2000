@@ -22,15 +22,15 @@ const Layout = ({params, ...rest}) => {
   );
 };
 
-const LayoutEditor = ({params, className = '', ...rest}) => {
+const LayoutEditor = React.forwardRef(({params, className = '', ...rest}, ref) => {
   const states = useSelector((state) => state.components.states);
 
   return (
-    <div className={`${className} ${styles.Layout}`} {...rest}>
+    <div className={`${className} ${styles.Layout}`} ref={ref} {...rest}>
       {renderSubcomponents(params.ids, states)}
     </div>
   );
-}
+});
 
 registerComponent({
   name: 'layout',

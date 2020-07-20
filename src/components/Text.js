@@ -9,7 +9,7 @@ const Text = ({params, ...rest}) => (
   </div>
 );
 
-const TextEditor = ({id, params, ...rest}) => {
+const TextEditor = React.forwardRef(({id, params, ...rest}, ref) => {
   const dispatch = useDispatch();
 
   const updateText = (text) => {
@@ -28,11 +28,11 @@ const TextEditor = ({id, params, ...rest}) => {
   }
 
   return (
-    <div contentEditable="true" suppressContentEditableWarning="true" onBlur={(e)=>{updateText(e.currentTarget.innerHTML)}} {...rest}>
+    <div contentEditable="true" suppressContentEditableWarning="true" onBlur={(e)=>{updateText(e.currentTarget.innerHTML)}} ref={ref} {...rest}>
       {params.text}
     </div>
   );
-}
+});
 
 registerComponent({
   name: 'text',

@@ -23,3 +23,5 @@ export const NAVIGATE_PREV = 'NAVIGATE_PREV';
 export const NAVIGATE_NEXT = 'NAVIGATE_NEXT';
 export const NAVIGATE_UP = 'NAVIGATE_UP';
 export const NAVIGATE_DOWN = 'NAVIGATE_DOWN';
+
+export const SET_OVERLAY_TARGET = 'SET_OVERLAY_TARGET';

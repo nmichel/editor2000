@@ -10,6 +10,7 @@ const id5 = uuidv4();
 
 const INITIAL_STATE = {
   active: null,
+  element: null,
   list: [
     id5
   ],
@@ -48,6 +49,7 @@ function componentsReducer(state = INITIAL_STATE, action) {
 
     case ActionTypes.CANCEL_EDITION: {
       newState.active = null;
+      newState.element = null;
       return newState;
     }
 
@@ -213,6 +215,11 @@ function componentsReducer(state = INITIAL_STATE, action) {
 
       newState.active = target.params.ids[0];
 
+      return newState;
+    }
+
+    case ActionTypes.SET_OVERLAY_TARGET: {
+      newState.element = action.target;
       return newState;
     }
 

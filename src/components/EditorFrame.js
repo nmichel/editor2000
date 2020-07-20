@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useLayoutEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {getComponentForName, getEditorForName} from './registry';
 import {buildEventHandlerWrapper, noop} from '../misc/utils';
@@ -18,12 +18,20 @@ const ComponentRenderer = ({component: name, id, params, style}) => {
 };
 
 const ComponentEditor = (props) => {
+  const dispatch = useDispatch();
   const {component: name, id, params, style} = props;
   const component = getEditorForName(name);
   const handleNoopClickEvent = buildEventHandlerWrapper(noop);
+  const [componentEl, setComponentEl] = useState(null);
+
+  useLayoutEffect(() => {
+    dispatch(actions.component.setOverlayTarget(componentEl));
+  }, [componentEl, dispatch]);
+
+  const setRef = (e) => setComponentEl(e);
 
   return (
-    React.createElement(component, {className: `${styles.EditorFrame} ${styles.edit}`, style, id, params, onClick: handleNoopClickEvent})
+    React.createElement(component, {className: `${styles.EditorFrame}`, style, id, params, onClick: handleNoopClickEvent, ref: setRef})
   );
 };
 

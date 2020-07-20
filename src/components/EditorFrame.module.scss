@@ -1,13 +1,6 @@
-$edition-indicator-color: #ff9d00;
-
 .EditorFrame {
   border: none;
   position: relative;
-}
-
-.edit {
-  outline: 1px dashed $edition-indicator-color;
-  z-index: 1;
 }
 
 .Cross {
