@@ -54,12 +54,12 @@ function componentsReducer(state = INITIAL_STATE, action) {
     }
 
     case ActionTypes.SET_TEXT:  {
-      newStates[id].params.text = action.payload.params.text;
+      newStates[id].params = {...newStates[id].params, text: action.payload.params.text};
       return newState;
     }
 
     case ActionTypes.SET_IMAGE_URL: {
-      newStates[id].params.url = action.payload.params.url;
+      newStates[id].params = {...newStates[id].params, url: action.payload.params.url};
       return newState;
     }
 
