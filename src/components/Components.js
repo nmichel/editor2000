@@ -35,7 +35,6 @@ const Components = () => {
   return (
     <div className={styles.Editor}>
       <div className={styles.Header}>
-        <h1>{t("Editor.title")}</h1>
         {stateComponents.active && renderToolbar(stateComponents)}
       </div>
       <div className={styles.Components} ref={setRef}>
