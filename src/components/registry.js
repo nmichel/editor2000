@@ -8,7 +8,7 @@ window.components = components;
 const registerComponent = (declaration) => {
   const {name, ...props} = declaration;
   let {controls = [], ...rest} = props;
-  controls = [...controls, Navigator, Delete, Cross];
+  controls = [Navigator, Delete, Cross, ...controls];
 
   components[name] = {controls, ...rest};
 };
