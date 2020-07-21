@@ -38,7 +38,8 @@ function componentsReducer(state = INITIAL_STATE, action) {
     }
 
     case ActionTypes.SAVE: {
-      localStorage.setItem('component_editor', JSON.stringify(state));
+      const {element: _drop, ...storableState} = state; // element is a DOM reference. Don't try to save it !
+      localStorage.setItem('component_editor', JSON.stringify(storableState));
       return state;
     }
 
