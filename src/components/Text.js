@@ -4,7 +4,7 @@ import { registerComponent } from './registry';
 import actions from '../actions';
 
 const Text = ({params, ...rest}) => (
-  <div  {...rest}>
+  <div {...rest}>
     {params.text}
   </div>
 );

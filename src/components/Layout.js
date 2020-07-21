@@ -2,7 +2,6 @@ import React from 'react';
 import {useSelector} from "react-redux";
 import {registerComponent} from './registry';
 import EditorFrame from './EditorFrame';
-import styles from './Layout.module.scss';
 import ChildAdder from './controls/ChildAdder';
 
 const renderSubcomponents = (ids, states) => {
@@ -16,17 +15,17 @@ const Layout = ({params, ...rest}) => {
   const states = useSelector((state) => state.components.states);
 
   return (
-    <div className={`${styles.Layout}`} {...rest}>
+    <div {...rest}>
       {renderSubcomponents(params.ids, states)}
     </div>
   );
 };
 
-const LayoutEditor = React.forwardRef(({params, className = '', ...rest}, ref) => {
+const LayoutEditor = React.forwardRef(({params, ...rest}, ref) => {
   const states = useSelector((state) => state.components.states);
 
   return (
-    <div className={`${className} ${styles.Layout}`} ref={ref} {...rest}>
+    <div ref={ref} {...rest}>
       {renderSubcomponents(params.ids, states)}
     </div>
   );
@@ -37,18 +36,15 @@ registerComponent({
   component: Layout,
   editor: LayoutEditor,
   controls: [ChildAdder],
-  properties: {
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
   default: {
     component: 'layout',
     params: {
       ids: []
     },
     style: {
-      flexDirection: 'column',
-      alignItems: 'center'
+      alignItems: 'center',
+      display: 'flex',
+      flexDirection: 'column'
     }
   }
 });

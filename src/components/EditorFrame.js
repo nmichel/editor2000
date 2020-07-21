@@ -31,7 +31,7 @@ const ComponentEditor = (props) => {
   const setRef = (e) => setComponentEl(e);
 
   return (
-    React.createElement(component, {className: `${styles.EditorFrame}`, style, id, params, onClick: handleNoopClickEvent, ref: setRef})
+    React.createElement(component, {style, id, params, onClick: handleNoopClickEvent, ref: setRef})
   );
 };
 
