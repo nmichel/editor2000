@@ -19,28 +19,3 @@ $edition-indicator-color: #ff9d00;
   margin-top: 80px;
   position: relative;
 }
-
-.Overlay {
-  background-color: transparent;
-  pointer-events: none;
-  position: absolute;
-  z-index: 2;
-}
-
-.edit {
-  outline: 1px dashed $edition-indicator-color;
-  z-index: 1;
-}
-
-.OverlayHeader {
-  background: repeating-linear-gradient(
-    45deg,
-    $edition-indicator-color,
-    $edition-indicator-color 10px,
-    lighten($edition-indicator-color, 50%) 10px,
-    lighten($edition-indicator-color, 50%) 20px
-  );
-  height: 10px;
-  opacity: 0.6;
-}
-
