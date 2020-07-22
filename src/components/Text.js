@@ -24,7 +24,7 @@ const TextEditor = React.forwardRef(({id, params, ...rest}, ref) => {
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
         .replace(/&amp;/g, '&')
-    dispatch(actions.component.setText(id, text));
+    dispatch(actions.component.setParamValue(id, 'text', text));
   }
 
   return (

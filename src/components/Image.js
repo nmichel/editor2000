@@ -12,7 +12,7 @@ const ImageEditor = React.forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const updateUrl = (url) => {
-    dispatch(actions.component.setImageUrl(id, url));
+    dispatch(actions.component.setParamValue(id, 'url', url));
   }
 
   const wrapperStyle = {

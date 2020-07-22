@@ -19,19 +19,11 @@ const cancelEdition = () => {
   };
 };
 
-const setText = (id, text) => {
+const setParamValue = (id, param, value) => {
   return {
-    type: ActionTypes.SET_TEXT,
+    type: ActionTypes.SET_PARAM_VALUE,
     id,
-    payload: { params: { text } }
-  };
-};
-
-const setImageUrl = (id, url) => {
-  return {
-    type: ActionTypes.SET_IMAGE_URL,
-    id,
-    payload: { params: { url } }
+    payload: { param, value }
   };
 };
 
@@ -122,8 +114,7 @@ export default {
   load,
   editComponent,
   cancelEdition,
-  setText,
-  setImageUrl,
+  setParamValue,
   setStyleValue,
   addStyle,
   deleteStyle,

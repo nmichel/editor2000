@@ -54,13 +54,8 @@ function componentsReducer(state = INITIAL_STATE, action) {
       return newState;
     }
 
-    case ActionTypes.SET_TEXT:  {
-      newStates[id].params = {...newStates[id].params, text: action.payload.params.text};
-      return newState;
-    }
-
-    case ActionTypes.SET_IMAGE_URL: {
-      newStates[id].params = {...newStates[id].params, url: action.payload.params.url};
+    case ActionTypes.SET_PARAM_VALUE: {
+      newStates[id].params = {...newStates[id].params, [action.payload.param]: action.payload.value};
       return newState;
     }
 
