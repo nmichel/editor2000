@@ -1,70 +1,9 @@
 import React, {useLayoutEffect, useState, useEffect} from 'react';
 import styles from './Overlay.module.scss';
 
-const REFRESH_DELAY_MS = 300;
-
 const Overlay = ({element, refElement}) => {
-  const [position, setPosition] = useState(null);
-  const [refPosition, setRefPosition] = useState(null);
-
-  useLayoutEffect(() => {
-    if (!refElement) {
-      return;
-    }
-
-    const refElementPositionList = refElement.getClientRects();
-    const refElementPosition = refElementPositionList && refElementPositionList[0];
-    setRefPosition(refElementPosition);
-
-    const refresherId = setInterval(() => {
-      const newPositionList = refElement.getClientRects();
-      const newPosition = newPositionList && newPositionList[0];
-      setRefPosition((oldPosition) => {
-        const areSameDOMRect = identicalDOMRect(oldPosition, newPosition);
-        return areSameDOMRect ? oldPosition : newPosition;
-      });
-    }, REFRESH_DELAY_MS);
-
-    return () => {
-      console.log('clearing');
-      clearInterval(refresherId);
-    };
-
-  }, [refElement]);
-
-  useLayoutEffect(() => {
-    if (!element) {
-      return;
-    }
-
-    const newPositionList = element.getClientRects();
-    const newPosition = newPositionList && newPositionList[0];
-    setPosition(newPosition);
-
-    const resizeObserver = new ResizeObserver(entries => {
-      for (let entry of entries) {
-        console.log('resize', entry);
-      }
-    });
-
-    resizeObserver.observe(element);
-
-    const refresherId = setInterval(() => {
-      const newPositionList = element.getClientRects();
-      const newPosition = newPositionList && newPositionList[0];
-      setPosition((oldPosition) => {
-        const areSameDOMRect = identicalDOMRect(oldPosition, newPosition);
-        return areSameDOMRect ? oldPosition : newPosition;
-      });
-    }, REFRESH_DELAY_MS);
-
-    return () => {
-      console.log('clearing');
-      clearInterval(refresherId);
-      resizeObserver.unobserve(element);
-    }
-  }, [element, refElement]);
-
+  const position = useDOMRect(element);
+  const refPosition = useDOMRect(refElement);
   const [style, setStyle] = useState({});
 
   useEffect(() => {
@@ -90,6 +29,38 @@ const Overlay = ({element, refElement}) => {
     </div>
   );
 };
+
+const useDOMRect = (element) => {
+  const [position, setPosition] = useState(null);
+
+  useLayoutEffect(() => {
+    if (!element) {
+      return;
+    }
+
+    const refElementPositionList = element.getClientRects();
+    const refElementPosition = refElementPositionList && refElementPositionList[0];
+    setPosition(refElementPosition);
+
+    const refresherId = setInterval(() => {
+      const newPositionList = element.getClientRects();
+      const newPosition = newPositionList && newPositionList[0];
+      setPosition((oldPosition) => {
+        const areSameDOMRect = identicalDOMRect(oldPosition, newPosition);
+        return areSameDOMRect ? oldPosition : newPosition;
+      });
+    }, REFRESH_DELAY_MS);
+
+    return () => {
+      clearInterval(refresherId);
+    };
+
+  }, [element]);
+
+  return position;
+};
+
+const REFRESH_DELAY_MS = 300;
 
 const identicalDOMRect = (r1, r2) => {
   if (!r1 || !r2) return false;
