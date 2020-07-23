@@ -25,11 +25,14 @@ const getComponentNameList = () => Object.keys(components);
 
 const getDefaultParamsForName = (name) => getRecordForName(name).default;
 
+const getOnsitePropsForName = (name) => getRecordForName(name).onsite;
+
 export {
   registerComponent,
   getComponentForName,
   getEditorForName,
   getControlsForName,
   getComponentNameList,
-  getDefaultParamsForName
+  getDefaultParamsForName,
+  getOnsitePropsForName
 }

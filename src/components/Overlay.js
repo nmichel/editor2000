@@ -1,7 +1,7 @@
 import React, {useLayoutEffect, useState, useEffect} from 'react';
 import styles from './Overlay.module.scss';
 
-const Overlay = ({element, refElement}) => {
+const Overlay = ({element, refElement, children}) => {
   const position = useDOMRect(element);
   const refPosition = useDOMRect(refElement);
   const [style, setStyle] = useState({});
@@ -26,6 +26,7 @@ const Overlay = ({element, refElement}) => {
   return (
     <div className={`${styles.Overlay} ${styles.edit}`} style={style}>
       <div className={`${styles.OverlayHeader}`} />
+      {children}
     </div>
   );
 };

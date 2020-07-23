@@ -1,11 +1,14 @@
-import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {getOnsitePropsForName} from './registry';
 import EditorFrame from './EditorFrame';
 import Overlay from './Overlay';
 import Toolbar from './Toolbar';
 import styles from './Components.module.scss';
+import actions from '../actions';
 
 const Components = () => {
+  const dispatch = useDispatch();
   const stateComponents = useSelector((state) => state.components);
   const [componentEl, setComponentEl] = useState(null);
 
@@ -23,8 +26,27 @@ const Components = () => {
     );
   };
 
+  const renderOnSiteEditors = () => {
+    const id = stateComponents.active;
+    const clazz = stateComponents.states[id].component;
+    const onsite = getOnsitePropsForName(clazz) || [];
+  
+    return onsite.map(([param, type]) => {
+      return (
+        <TextInputField url={stateComponents.states[id].params[param]} handleChangeFn={(text) => {
+          dispatch(actions.component.setParamValue(id, param, text));
+        }}/>
+      );
+    });
+  };
+
   const renderOverlay = () => {
-    return stateComponents.element && <Overlay element={stateComponents.element} refElement={componentEl} />
+    return (
+      stateComponents.element &&
+      <Overlay element={stateComponents.element} refElement={componentEl}>
+        {renderOnSiteEditors()}
+      </Overlay>
+    );
   };
 
   return (
@@ -39,5 +61,36 @@ const Components = () => {
     </div>
   );
 };
+
+const TextInputField = ({url, handleChangeFn}) => {
+  const [text, setText] = useState(url);
+
+  useEffect(() => {
+    setText(url);
+  }, [url]);
+
+  const handleChange = (event) => setText(event.target.value)
+
+  const handleKeyDown = (event) => {
+    const code = event.keyCode;
+    if (code === 13) {
+      event.preventDefault();
+      handleChangeFn(text);
+    }
+  }
+
+  const style = {
+    pointerEvents: 'all',
+    borderRadius: '0',
+    padding: '10px',
+    outline: 'none',
+    border: '1px dashed',
+    zIndex: 2
+  };
+
+  return (
+    <input style={style} type="text" value={text} onChange={handleChange} onKeyDown={handleKeyDown} />
+  );
+}
 
 export default Components;
