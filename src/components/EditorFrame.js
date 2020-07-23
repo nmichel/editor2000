@@ -2,7 +2,6 @@ import React, {useState, useLayoutEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {getComponentForName, getEditorForName} from './registry';
 import {buildEventHandlerWrapper, noop} from '../misc/utils';
-import styles from './EditorFrame.module.scss';
 import actions from '../actions';
 
 const ComponentRenderer = ({component: name, id, params, style}) => {

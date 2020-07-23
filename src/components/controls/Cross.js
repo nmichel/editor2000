@@ -4,7 +4,7 @@ import { FaTimesCircle } from 'react-icons/fa';
 import { buildEventHandlerWrapper } from '../../misc/utils';
 import actions from '../../actions';
 import commonStyle from '../common.module.scss';
-import styles from '../EditorFrame.module.scss';
+import styles from './controls.module.scss';
 
 const Cross = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const Cross = () => {
   const clickEventHandler = buildEventHandlerWrapper(cancelEdition);
 
   return (
-    <div onClick={clickEventHandler} className={`${commonStyle.toolbar_button} ${styles.Cross}`}><FaTimesCircle /></div>
+    <div onClick={clickEventHandler} className={`${commonStyle.toolbar_button} ${styles.icon}`}><FaTimesCircle /></div>
   )
 };
   

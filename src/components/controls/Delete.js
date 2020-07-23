@@ -4,7 +4,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 import YesNo, {withYesNo} from './YesNo';
 import actions from '../../actions';
 import commonStyle from '../common.module.scss';
-import styles from '../EditorFrame.module.scss';
+import styles from './controls.module.scss';
 
 const Delete = ({id}) => {
   const [showYesNo, setShowYesNo] = useState(false);
@@ -23,7 +23,7 @@ const Delete = ({id}) => {
 
   return (
     <div>
-      <div onClick={() => setShowYesNo(!showYesNo)} className={`${commonStyle.toolbar_button} ${styles.Cross}`}>
+      <div onClick={() => setShowYesNo(!showYesNo)} className={`${commonStyle.toolbar_button} ${styles.icon}`}>
         <FaTrashAlt />
       </div>
       {showYesNo && <YesNo onYes={doDelete} onNo={cancelDelete} />}

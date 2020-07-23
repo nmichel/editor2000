@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {FaRegArrowAltCircleLeft, FaRegArrowAltCircleRight, FaRegArrowAltCircleUp, FaRegArrowAltCircleDown} from 'react-icons/fa';
-import {getComponentNameList} from '../registry';
 import actions from '../../actions';
 import styles from '../common.module.scss';
 
