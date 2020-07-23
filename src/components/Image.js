@@ -5,18 +5,9 @@ const Image = ({params, ...rest}) => (
   <img src={`${params.url}`} alt="img" {...rest} />
 );
 
-const ImageEditor = React.forwardRef((props, ref) => {
-  const {id, params, style, ...rest} = props;
-
-  const wrapperStyle = {
-    display: 'flex',
-    position: 'relative'
-  };
-
+const ImageEditor = React.forwardRef(({params, ...rest}, ref) => {
   return (
-    <div style={wrapperStyle} ref={ref} {...rest} >
-      <Image params={params} style={style} />
-    </div>
+    <img src={`${params.url}`} alt="img" ref={ref} {...rest} />
   );
 });
 
