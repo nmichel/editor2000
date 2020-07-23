@@ -80,11 +80,11 @@ const TextInputField = ({url, handleChangeFn}) => {
   }
 
   const style = {
-    pointerEvents: 'all',
-    borderRadius: '0',
-    padding: '10px',
-    outline: 'none',
     border: '1px dashed',
+    borderRadius: '0',
+    outline: 'none',
+    padding: '10px',
+    pointerEvents: 'all',
     zIndex: 2
   };
 

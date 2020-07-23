@@ -15,8 +15,8 @@ const Overlay = ({element, refElement, children}) => {
       const newStyle = {...style,
         left: position.left - refPosition.left,
         top: position.top - refPosition.top,
-        width: position.width,
-        height: position.height
+        minWidth: position.width,
+        minHeight: position.height
       };
       return newStyle;
     });
@@ -26,7 +26,9 @@ const Overlay = ({element, refElement, children}) => {
   return (
     <div className={`${styles.Overlay} ${styles.edit}`} style={style}>
       <div className={`${styles.OverlayHeader}`} />
-      {children}
+      <div className={`${styles.OverlayContent}`}>
+        {children}
+      </div>
     </div>
   );
 };
