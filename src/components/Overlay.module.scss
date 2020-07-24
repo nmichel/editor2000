@@ -24,6 +24,7 @@ $edition-indicator-color: #ff9d00;
   height: 10px;
   margin-bottom: 10px;
   opacity: 0.6;
+  pointer-events: initial;
 }
 
 .OverlayContent {
@@ -31,4 +32,5 @@ $edition-indicator-color: #ff9d00;
   flex-direction: column;
   justify-content: flex-end;
   margin: auto 10px 10px 10px;
+  pointer-events: none;
 }
