@@ -28,7 +28,7 @@ const TextEditor = React.forwardRef(({id, params, ...rest}, ref) => {
   }
 
   return (
-    <div contentEditable="true" suppressContentEditableWarning="true" onBlur={(e)=>{updateText(e.currentTarget.innerHTML)}} ref={ref} {...rest}>
+    <div contentEditable="true" suppressContentEditableWarning="true" id={id} onBlur={(e)=>{updateText(e.currentTarget.innerHTML)}} ref={ref} {...rest}>
       {params.text}
     </div>
   );
