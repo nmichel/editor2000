@@ -4,29 +4,32 @@ import {registerComponent} from './registry';
 import EditorFrame from './EditorFrame';
 import ChildAdder from './controls/ChildAdder';
 
-const renderSubcomponents = (ids, states) => {
+const Subcomponent = ({id}) => {
+  const props = useSelector((state) => state.components.states[id]);
+
+  return (
+    <EditorFrame id={id} {...props} />
+  );
+};
+
+const renderSubcomponents = (ids) => {
   return ids.map((id) => {
-    const props = states[id];
-    return <EditorFrame key={id} id={id} {...props} />
+    return <Subcomponent key={id} id={id} />
   })
 }
 
 const Layout = ({params, ...rest}) => {
-  const states = useSelector((state) => state.components.states);
-
   return (
     <div {...rest}>
-      {renderSubcomponents(params.ids, states)}
+      {renderSubcomponents(params.ids)}
     </div>
   );
 };
 
 const LayoutEditor = React.forwardRef(({params, ...rest}, ref) => {
-  const states = useSelector((state) => state.components.states);
-
   return (
     <div ref={ref} {...rest}>
-      {renderSubcomponents(params.ids, states)}
+      {renderSubcomponents(params.ids)}
     </div>
   );
 });

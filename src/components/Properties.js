@@ -32,9 +32,7 @@ const PropertyEditor = ({id, k, v}) => {
 }
 
 const PropertyList = ({id}) => {
-  const states = useSelector((state) => state.components.states);
-  const component = states[id];
-  const style = component.style;
+  const style = useSelector((state) => state.components.states[id].style);
 
   return (
     <div>
