@@ -1,10 +1,10 @@
 import React, {useState, useLayoutEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {getComponentForName, getEditorForName} from './registry';
 import {buildEventHandlerWrapper, noop} from '../misc/utils';
 import actions from '../actions';
 
-const ComponentRenderer = ({component: name, id, params, style}) => {
+const ComponentRenderer = ({component: name, id, ...rest}) => {
   const dispatch = useDispatch();
   const component = getComponentForName(name);
 
@@ -12,13 +12,12 @@ const ComponentRenderer = ({component: name, id, params, style}) => {
   const handleStartEditionClickEvent = buildEventHandlerWrapper(editComponent);
 
   return (
-    React.createElement(component, {style, id, params, onClick: handleStartEditionClickEvent})
+    React.createElement(component, {...rest, id, onClick: handleStartEditionClickEvent})
   );
 };
 
-const ComponentEditor = (props) => {
+const ComponentEditor = ({component: name, ...rest}) => {
   const dispatch = useDispatch();
-  const {component: name, id, params, style} = props;
   const component = getEditorForName(name);
   const handleNoopClickEvent = buildEventHandlerWrapper(noop);
   const [componentEl, setComponentEl] = useState(null);
@@ -30,16 +29,15 @@ const ComponentEditor = (props) => {
   const setRef = (e) => setComponentEl(e);
 
   return (
-    React.createElement(component, {style, id, params, onClick: handleNoopClickEvent, ref: setRef})
+    React.createElement(component, {...rest, onClick: handleNoopClickEvent, ref: setRef})
   );
 };
 
 const EditorFrame = (props) => {
-  const activeComponentId = useSelector((state) => state.components.active);
-  const { id } = props;
-  const Component = activeComponentId === id ? ComponentEditor : ComponentRenderer;
+  const { active, ...rest } = props;
+  const Component = active ? ComponentEditor : ComponentRenderer;
 
-  return <Component {...props} />;
+  return <Component {...rest} />;
 };
 
 export default EditorFrame;

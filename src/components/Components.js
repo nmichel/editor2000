@@ -7,56 +7,58 @@ import Toolbar from './Toolbar';
 import styles from './Components.module.scss';
 import actions from '../actions';
 
-const Components = () => {
+const ComponentOnsiteEditor = ({refElement}) => {
   const dispatch = useDispatch();
-  const stateComponents = useSelector((state) => state.components);
-  const [componentEl, setComponentEl] = useState(null);
-
-  const setRef = (e) => setComponentEl(e);
-
-  const renderComponents = () => stateComponents.list.map((id) => {
-    const props = stateComponents.states[id];
-    return <EditorFrame key={id} id={id} {...props} />
-  });
-
-  const renderToolbar = ({active, states}) => {
-    const clazz = states[active].component;
-    return (
-      <Toolbar component={clazz} id={active} />
-    );
-  };
+  const element = useSelector((state) => state.components.element);
+  const active = useSelector((state) => state.components.active);
+  const component = useSelector((state) => state.components.states[state.components.active]);
 
   const renderOnSiteEditors = () => {
-    const id = stateComponents.active;
-    const clazz = stateComponents.states[id].component;
+    const clazz = component.component;
     const onsite = getOnsitePropsForName(clazz) || [];
   
     return onsite.map(([param, type]) => {
       return (
-        <TextInputField url={stateComponents.states[id].params[param]} handleChangeFn={(text) => {
-          dispatch(actions.component.setParamValue(id, param, text));
+        <TextInputField url={component.params[param]} handleChangeFn={(text) => {
+          dispatch(actions.component.setParamValue(active, param, text));
         }}/>
       );
     });
   };
 
-  const renderOverlay = () => {
-    return (
-      stateComponents.element &&
-      <Overlay element={stateComponents.element} refElement={componentEl}>
-        {renderOnSiteEditors()}
-      </Overlay>
-    );
-  };
+  return (
+    element
+      ? <Overlay element={element} refElement={refElement}>
+          {renderOnSiteEditors()}
+        </Overlay>
+      : null
+  )
+};
+
+const ComponentToolbar = () => {
+  const active = useSelector((state) => state.components.active);
+  const component = useSelector((state) => state.components.states[state.components.active]);
+
+  return (
+    active ? <Toolbar component={component.component} id={active} /> : null
+  );
+};
+
+const Components = () => {
+  const stateComponentsRoot = useSelector((state) => state.components.root);
+  const stateComponentsStatesRoot = useSelector((state) => state.components.states[state.components.root]);
+  const [componentEl, setComponentEl] = useState(null);
+
+  const setRef = (e) => setComponentEl(e);
 
   return (
     <div className={styles.Editor}>
       <div className={styles.Header}>
-        {stateComponents.active && renderToolbar(stateComponents)}
+        <ComponentToolbar />
       </div>
       <div className={styles.Components} ref={setRef}>
-        {renderOverlay()}
-        {renderComponents()}
+        <ComponentOnsiteEditor refElement={componentEl} />
+        <EditorFrame key={stateComponentsRoot} id={stateComponentsRoot} {...stateComponentsStatesRoot} />
       </div>
     </div>
   );

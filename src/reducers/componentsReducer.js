@@ -11,15 +11,13 @@ const id5 = uuidv4();
 const INITIAL_STATE = {
   active: null,
   element: null,
-  list: [
-    id5
-  ],
+  root: id5,
   states: {
-    [id1]: {component: 'text', parent: id5, params: {text: 'hello \n world!'}, style: {whiteSpace: 'pre-wrap'}},
-    [id2]: {component: 'image', parent: id4, params: {url: 'https://picsum.photos/id/249/200/300'}, style: {}},
-    [id3]: {component: 'text', parent: id4, params: {text: 'Je \n suis \n ton \n Père!'}, style: {whiteSpace: 'pre-wrap', fontSize: '20px'}},
-    [id4]: {component: 'layout', parent: id5, params: {ids: [id2, id3]}, style: {flexDirection: 'column'}},
-    [id5]: {component: 'layout', params: {ids: [id4, id1]}, style: {flexDirection: 'column'}},
+    [id1]: {active: false, component: 'text', parent: id5, params: {text: 'hello \n world!'}, style: {whiteSpace: 'pre-wrap'}},
+    [id2]: {active: false, component: 'image', parent: id4, params: {url: 'https://picsum.photos/id/249/200/300'}, style: {}},
+    [id3]: {active: false, component: 'text', parent: id4, params: {text: 'Je \n suis \n ton \n Père!'}, style: {whiteSpace: 'pre-wrap', fontSize: '20px'}},
+    [id4]: {active: false, component: 'layout', parent: id5, params: {ids: [id2, id3]}, style: {flexDirection: 'column'}},
+    [id5]: {active: false, component: 'layout', params: {ids: [id4, id1]}, style: {flexDirection: 'column'}},
   }};
 
 function componentsReducer(state = INITIAL_STATE, action) {
@@ -40,20 +38,42 @@ function componentsReducer(state = INITIAL_STATE, action) {
     }
 
     case ActionTypes.EDIT_COMPONENT: {
-      const id = action.id
-      return {...state, active: id};
+      const id = action.id;
+      let newStates = {...state.states};
+
+      const oldId = state.active;
+      if (oldId) {
+        const oldComponentState = state.states[oldId];
+        newStates[oldId] = {...oldComponentState, active: false};
+      }
+
+      const oldComponentState = state.states[id];
+      newStates[id] = {...oldComponentState, active: true};
+
+      return {...state, active: id, states: newStates};
     }
 
     case ActionTypes.CANCEL_EDITION: {
-      return {...state, active: null, element: null};
+      const id = action.id;
+      if (id) {
+        let newStates = {...state.states};
+        const oldComponentState = state.states[id];
+        newStates[id] = {...oldComponentState, active: false};
+        return {...state, active: null, states: newStates};
+      }
+      else {
+        return {...state, active: null, element: null};
+      }
     }
 
     case ActionTypes.SET_PARAM_VALUE: {
       const id = action.id
-      const newState = {...state, states: {...state.states}};
-      const newStates = newState.states;
-      newStates[id].params = {...newStates[id].params, [action.payload.param]: action.payload.value};
-      return newState;
+      const newStates = {...state.states};
+
+      const oldComponentState = state.states[id];
+      newStates[id] = {...oldComponentState, params: {...oldComponentState.params, [action.payload.param]: action.payload.value}};
+  
+      return {...state, states: newStates};
     }
 
     case ActionTypes.SET_STYLE_VALUE: {
@@ -112,7 +132,7 @@ function componentsReducer(state = INITIAL_STATE, action) {
       }
 
       const newComponentId = uuidv4();
-      newStates[newComponentId] = {parent: id, ...getDefaultParamsForName(params.name)};
+      newStates[newComponentId] = {parent: id, active: false, ...getDefaultParamsForName(params.name)};
 
       const newIds = [...newStates[id].params.ids, newComponentId];
       newStates[id] = {
@@ -134,7 +154,7 @@ function componentsReducer(state = INITIAL_STATE, action) {
       }
 
       const newComponentId = uuidv4();
-      newStates[newComponentId] = {parent: id, ...getDefaultParamsForName(params.name)};
+      newStates[newComponentId] = {parent: id, active: false, ...getDefaultParamsForName(params.name)};
 
       const newIds = [newComponentId, ...newStates[id].params.ids];
       newStates[id] = {
@@ -170,60 +190,104 @@ function componentsReducer(state = INITIAL_STATE, action) {
     }
 
     case ActionTypes.NAVIGATE_PREV: {
-      const id = action.id
-      const target = state.states[id];
-      const parentId = target.parent;
+      const currentId = state.active
+      const currentState = state.states[currentId];
+      const parentId = currentState.parent;
       if (!parentId) {
         return state;
       }
 
       const parent = state.states[parentId];
       const ids = parent.params.ids;
-      const idx = ids.indexOf(id);
+      const idx = ids.indexOf(currentId);
       if (idx === 0) {
         return state;
       }
 
-      return {...state, active: ids[idx-1]};
+      let targetId = ids[idx-1];
+      let newStates = {...state.states};
+
+      if (currentId) {
+        const oldComponentState = state.states[currentId];
+        newStates[currentId] = {...oldComponentState, active: false};
+      }
+
+      const oldComponentState = state.states[targetId];
+      newStates[targetId] = {...oldComponentState, active: true};
+
+      return {...state, active: targetId, states: newStates};
     }
 
     case ActionTypes.NAVIGATE_NEXT: {
-      const id = action.id
-      const target = state.states[id];
-      const parentId = target.parent;
+      const currentId = state.active
+      const currentState = state.states[currentId];
+      const parentId = currentState.parent;
       if (!parentId) {
         return state;
       }
 
       const parent = state.states[parentId];
       const ids = parent.params.ids;
-      const idx = ids.indexOf(id);
+      const idx = ids.indexOf(currentId);
       if (idx === ids.length-1) {
         return state;
       }
 
-      return {...state, active: ids[idx+1]};
+      let targetId = ids[idx+1];
+      let newStates = {...state.states};
+
+      if (currentId) {
+        const oldComponentState = state.states[currentId];
+        newStates[currentId] = {...oldComponentState, active: false};
+      }
+
+      const oldComponentState = state.states[targetId];
+      newStates[targetId] = {...oldComponentState, active: true};
+
+      return {...state, active: targetId, states: newStates};
     }
 
     case ActionTypes.NAVIGATE_UP: {
-      const id = action.id
-      const target = state.states[id];
-      const parentId = target.parent;
+      const currentId = action.id
+      const currentState = state.states[currentId];
+      const parentId = currentState.parent;
       if (!parentId) {
         return state;
       }
 
-      return {...state, active: parentId};
+      let targetId = parentId;
+      let newStates = {...state.states};
+
+      if (currentId) {
+        const oldComponentState = state.states[currentId];
+        newStates[currentId] = {...oldComponentState, active: false};
+      }
+
+      const oldComponentState = state.states[targetId];
+      newStates[targetId] = {...oldComponentState, active: true};
+
+      return {...state, active: targetId, states: newStates};
     }
 
     case ActionTypes.NAVIGATE_DOWN: {
-      const id = action.id
-      const target = state.states[id];
-      if (!target.params.ids || target.params.ids.length === 0) {
+      const currentId = action.id;
+      const currentState = state.states[currentId];
+      if (!currentState.params.ids || currentState.params.ids.length === 0) {
         return state;
       }
 
-      return {...state, active: target.params[0]};
+      let targetId = currentState.params.ids[0];
+      let newStates = {...state.states};
+
+      if (currentId) {
+        const oldComponentState = state.states[currentId];
+        newStates[currentId] = {...oldComponentState, active: false};
+      }
+
+      const oldComponentState = state.states[targetId];
+      newStates[targetId] = {...oldComponentState, active: true};
+
+      return {...state, active: targetId, states: newStates};
     }
 
     case ActionTypes.SET_OVERLAY_TARGET: {
