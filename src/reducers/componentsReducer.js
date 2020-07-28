@@ -23,10 +23,6 @@ const INITIAL_STATE = {
   }};
 
 function componentsReducer(state = INITIAL_STATE, action) {
-  const newState = {...state, list: [...state.list], states: {...state.states}};
-  const newStates = newState.states;
-  const id = action.id
-
   switch (action.type) {
     case ActionTypes.LOAD: {
       const savedState = localStorage.getItem('component_editor');
@@ -44,22 +40,26 @@ function componentsReducer(state = INITIAL_STATE, action) {
     }
 
     case ActionTypes.EDIT_COMPONENT: {
-      newState.active = id;
-      return newState;
+      const id = action.id
+      return {...state, active: id};
     }
 
     case ActionTypes.CANCEL_EDITION: {
-      newState.active = null;
-      newState.element = null;
-      return newState;
+      return {...state, active: null, element: null};
     }
 
     case ActionTypes.SET_PARAM_VALUE: {
+      const id = action.id
+      const newState = {...state, states: {...state.states}};
+      const newStates = newState.states;
       newStates[id].params = {...newStates[id].params, [action.payload.param]: action.payload.value};
       return newState;
     }
 
     case ActionTypes.SET_STYLE_VALUE: {
+      const id = action.id
+      const newState = {...state, states: {...state.states}};
+      const newStates = newState.states;
       const params = action.payload.params;
       const oldStyle = newStates[id].style;
       const newStyle = {...oldStyle, [params.property]: params.value};
@@ -72,6 +72,9 @@ function componentsReducer(state = INITIAL_STATE, action) {
     }
 
     case ActionTypes.ADD_STYLE: {
+      const id = action.id
+      const newState = {...state, states: {...state.states}};
+      const newStates = newState.states;
       const params = action.payload.params;
       const oldStyle = newStates[id].style;
       const newStyle = {...oldStyle, [params.property]: params.value};
@@ -84,6 +87,9 @@ function componentsReducer(state = INITIAL_STATE, action) {
     }
 
     case ActionTypes.DELETE_STYLE: {
+      const id = action.id
+      const newState = {...state, states: {...state.states}};
+      const newStates = newState.states;
       const params = action.payload.params;
       const oldStyle = newStates[id].style;
       const {[params.property]: _, ...newStyle} = oldStyle;
@@ -96,6 +102,9 @@ function componentsReducer(state = INITIAL_STATE, action) {
     }
 
     case ActionTypes.APPEND_COMPONENT: {
+      const id = action.id
+      const newState = {...state, states: {...state.states}};
+      const newStates = newState.states;
       const params = action.payload.params;
       const targetComponentType = (state.states[id] && state.states[id].component)|| "";
       if (targetComponentType !== 'layout') {
@@ -115,6 +124,9 @@ function componentsReducer(state = INITIAL_STATE, action) {
     }
 
     case ActionTypes.PREPEND_COMPONENT: {
+      const id = action.id
+      const newState = {...state, states: {...state.states}};
+      const newStates = newState.states;
       const params = action.payload.params;
       const targetComponentType = (state.states[id] && state.states[id].component)|| "";
       if (targetComponentType !== 'layout') {
@@ -134,6 +146,10 @@ function componentsReducer(state = INITIAL_STATE, action) {
     }
 
     case ActionTypes.DELETE_COMPONENT: {
+      const id = action.id
+      const newState = {...state, states: {...state.states}};
+      const newStates = newState.states;
+
       if (id === newState.active) {
         newState.active = null;
       }
@@ -154,6 +170,7 @@ function componentsReducer(state = INITIAL_STATE, action) {
     }
 
     case ActionTypes.NAVIGATE_PREV: {
+      const id = action.id
       const target = state.states[id];
       const parentId = target.parent;
       if (!parentId) {
@@ -167,12 +184,11 @@ function componentsReducer(state = INITIAL_STATE, action) {
         return state;
       }
 
-      newState.active = ids[idx-1];
-
-      return newState;
+      return {...state, active: ids[idx-1]};
     }
 
     case ActionTypes.NAVIGATE_NEXT: {
+      const id = action.id
       const target = state.states[id];
       const parentId = target.parent;
       if (!parentId) {
@@ -186,37 +202,32 @@ function componentsReducer(state = INITIAL_STATE, action) {
         return state;
       }
 
-      newState.active = ids[idx+1];
-
-      return newState;
+      return {...state, active: ids[idx+1]};
     }
 
     case ActionTypes.NAVIGATE_UP: {
+      const id = action.id
       const target = state.states[id];
       const parentId = target.parent;
       if (!parentId) {
         return state;
       }
 
-      newState.active = parentId;
-
-      return newState;
+      return {...state, active: parentId};
     }
 
     case ActionTypes.NAVIGATE_DOWN: {
+      const id = action.id
       const target = state.states[id];
       if (!target.params.ids || target.params.ids.length === 0) {
         return state;
       }
 
-      newState.active = target.params.ids[0];
-
-      return newState;
+      return {...state, active: target.params[0]};
     }
 
     case ActionTypes.SET_OVERLAY_TARGET: {
-      newState.element = action.target;
-      return newState;
+      return {...state, element: action.target};
     }
 
     default:
