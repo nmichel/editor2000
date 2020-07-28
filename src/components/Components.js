@@ -17,9 +17,9 @@ const ComponentOnsiteEditor = ({refElement}) => {
     const clazz = component.component;
     const onsite = getOnsitePropsForName(clazz) || [];
   
-    return onsite.map(([param, type]) => {
+    return onsite.map(([param, type], idx) => {
       return (
-        <TextInputField url={component.params[param]} handleChangeFn={(text) => {
+        <TextInputField key={idx} url={component.params[param]} handleChangeFn={(text) => {
           dispatch(actions.component.setParamValue(active, param, text));
         }}/>
       );
