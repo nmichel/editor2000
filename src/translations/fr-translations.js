@@ -3,9 +3,18 @@ const frTranslations = {
     "title": "editeur"
   },
 
+  "Navigator": {
+    "navigate": "naviguer"
+  },
+
+  "Adder": {
+    "add": "ajouter",
+    "choose_a_component": "choisissez un composant"
+  },
+
   "Properties": {
-    "title": "propriétés",
-    "select_component": "sélectionnez un composant"
+    "select_component": "sélectionnez un composant",
+    "title": "propriétés"
   }
 };
   

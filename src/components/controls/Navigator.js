@@ -15,7 +15,7 @@ const Navigator = ({id}) => {
 
   return (
     <div className={`${styles.toolbar_button_section}`}>
-      <div className={`${styles.toolbar_button_section_title}`}>{t('navigate')}</div>
+      <div className={`${styles.toolbar_button_section_title}`}>{t('Navigator.navigate')}</div>
       <div className={`${styles.toolbar_button_group}`}>
         <div className={`${styles.toolbar_button}`} onClick={navigatePrev}>
           <FaRegArrowAltCircleLeft />

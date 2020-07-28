@@ -10,7 +10,7 @@ const TypeSelector = ({chooseComponent})  => {
   const {t} = useTranslation();
   return (
     <select onChange={(e) => chooseComponent(e.target.value)}>
-      <option value="">{t('choose a component')}</option>
+      <option value="">{t('Adder.choose_a_component')}</option>
       {getComponentNameList().map((name, idx) => <option key={idx} value={name}>{name}</option>)}
     </select>
   );
@@ -31,7 +31,7 @@ const ChildAdder = ({id}) => {
 
   return (
     <div className={`${styles.toolbar_button_section}`}>
-      <div className={`${styles.toolbar_button_section_title}`}>{t('add')}</div>
+      <div className={`${styles.toolbar_button_section_title}`}>{t('Adder.add')}</div>
       <div className={`${styles.toolbar_button_group}`}>
         <div className={`${styles.toolbar_button} ${isValidComponent() ? '' : styles.inactive}`} onClick={isValidComponent() ? prependComponent : undefined}>
           <FaStepBackward />
