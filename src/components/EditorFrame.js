@@ -12,7 +12,7 @@ const ComponentRenderer = ({component: name, id, ...rest}) => {
   const handleStartEditionClickEvent = buildEventHandlerWrapper(editComponent);
 
   return (
-    React.createElement(component, {...rest, id, onClick: handleStartEditionClickEvent})
+    component ? React.createElement(component, {...rest, id, onClick: handleStartEditionClickEvent}) : null
   );
 };
 

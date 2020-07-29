@@ -27,7 +27,7 @@ const ComponentOnsiteEditor = ({refElement}) => {
   };
 
   return (
-    element
+    element && component
       ? <Overlay element={element} refElement={refElement}>
           {renderOnSiteEditors()}
         </Overlay>
@@ -40,7 +40,7 @@ const ComponentToolbar = () => {
   const component = useSelector((state) => state.components.states[state.components.active]);
 
   return (
-    active ? <Toolbar component={component.component} id={active} /> : null
+    active && component ? <Toolbar component={component.component} id={active} /> : null
   );
 };
 
@@ -58,7 +58,7 @@ const Components = () => {
       </div>
       <div className={styles.Components} ref={setRef}>
         <ComponentOnsiteEditor refElement={componentEl} />
-        <EditorFrame key={stateComponentsRoot} id={stateComponentsRoot} {...stateComponentsStatesRoot} />
+        {stateComponentsStatesRoot && <EditorFrame key={stateComponentsRoot} id={stateComponentsRoot} {...stateComponentsStatesRoot} />}
       </div>
     </div>
   );

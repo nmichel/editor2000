@@ -13,7 +13,7 @@ const registerComponent = (declaration) => {
   components[name] = {controls, ...rest};
 };
 
-const getRecordForName = (name) => components[name];
+const getRecordForName = (name) => components[name] || {};
 
 const getComponentForName = (name) => getRecordForName(name).component;
 
