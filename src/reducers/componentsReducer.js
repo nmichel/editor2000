@@ -54,12 +54,12 @@ function componentsReducer(state = INITIAL_STATE, action) {
     }
 
     case ActionTypes.CANCEL_EDITION: {
-      const id = action.id;
+      const id = state.active;
       if (id) {
         let newStates = {...state.states};
         const oldComponentState = state.states[id];
         newStates[id] = {...oldComponentState, active: false};
-        return {...state, active: null, states: newStates};
+        return {...state, active: null, element: null, states: newStates};
       }
       else {
         return {...state, active: null, element: null};
