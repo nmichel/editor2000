@@ -12,6 +12,11 @@ const frTranslations = {
     "choose_a_component": "choisissez un composant"
   },
 
+  "YesNo": {
+    "yes": "oui",
+    "no": "non"
+  },
+
   "Properties": {
     "select_component": "sélectionnez un composant",
     "title": "propriétés"

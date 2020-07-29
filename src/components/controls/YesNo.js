@@ -7,8 +7,8 @@ const YesNo = ({onYes, onNo}) => {
 
   return (
     <div className={`${commonStyle.yesno} ${commonStyle.toolbar_button_group}`}>
-      <div className={`${commonStyle.toolbar_button}`} onClick={onYes}>{t('yes')}</div>
-      <div className={`${commonStyle.toolbar_button}`} onClick={onNo}>{t('no')}</div>
+      <div className={`${commonStyle.toolbar_button}`} onClick={onYes}>{t('YesNo.yes')}</div>
+      <div className={`${commonStyle.toolbar_button}`} onClick={onNo}>{t('YesNo.no')}</div>
     </div>
   );
 }
