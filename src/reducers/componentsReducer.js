@@ -167,6 +167,10 @@ function componentsReducer(state = INITIAL_STATE, action) {
 
     case ActionTypes.DELETE_COMPONENT: {
       const id = action.id
+      if (id === state.root) {
+        return state;
+      }
+
       const newState = {...state, states: {...state.states}};
       const newStates = newState.states;
 
@@ -175,6 +179,7 @@ function componentsReducer(state = INITIAL_STATE, action) {
       }
 
       delete newStates[id];
+
       Object.keys(newStates).forEach((k) => {
         const componentState = newStates[k];
         if (componentState.params.ids !== undefined) {
@@ -186,6 +191,19 @@ function componentsReducer(state = INITIAL_STATE, action) {
           }
         }
       })
+
+      let hasOrphans = true;
+      while (hasOrphans) {
+        hasOrphans = false;
+        Object.keys(newStates).forEach((k) => {
+          const componentState = newStates[k];
+          if (k !== state.root && !newStates[componentState.parent]) {
+            hasOrphans = true;
+            delete newStates[k];
+          }
+        })
+      }
+
       return newState;
     }
 
