@@ -18,15 +18,7 @@ const renderSubcomponents = (ids) => {
   })
 }
 
-const Layout = ({params, ...rest}) => {
-  return (
-    <div {...rest}>
-      {renderSubcomponents(params.ids)}
-    </div>
-  );
-};
-
-const LayoutEditor = React.forwardRef(({params, ...rest}, ref) => {
+const Layout = React.forwardRef(({params, ...rest}, ref) => {
   return (
     <div ref={ref} {...rest}>
       {renderSubcomponents(params.ids)}
@@ -37,7 +29,6 @@ const LayoutEditor = React.forwardRef(({params, ...rest}, ref) => {
 registerComponent({
   name: 'layout',
   component: Layout,
-  editor: LayoutEditor,
   controls: [ChildAdder],
   default: {
     component: 'layout',

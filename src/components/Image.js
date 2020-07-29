@@ -1,11 +1,7 @@
 import React from 'react';
 import { registerComponent } from './registry';
 
-const Image = ({params, ...rest}) => (
-  <img src={`${params.url}`} alt="img" {...rest} />
-);
-
-const ImageEditor = React.forwardRef(({params, ...rest}, ref) => {
+const Image = React.forwardRef(({params, ...rest}, ref) => {
   return (
     <img src={`${params.url}`} alt="img" ref={ref} {...rest} />
   );
@@ -14,7 +10,6 @@ const ImageEditor = React.forwardRef(({params, ...rest}, ref) => {
 registerComponent({
   name: 'image',
   component: Image,
-  editor: ImageEditor,
   onsite: [
     ['url', 'text']
   ],

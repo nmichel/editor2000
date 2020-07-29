@@ -3,11 +3,13 @@ import { useDispatch } from "react-redux";
 import { registerComponent } from './registry';
 import actions from '../actions';
 
-const Text = ({params, ...rest}) => (
-  <div {...rest}>
-    {params.text}
-  </div>
-);
+const Text = React.forwardRef(({id, params, ...rest}, ref) => {
+  return (
+    <div {...rest} ref={ref}>
+      {params.text}
+    </div>
+  );
+});
 
 const TextEditor = React.forwardRef(({id, params, ...rest}, ref) => {
   const dispatch = useDispatch();
