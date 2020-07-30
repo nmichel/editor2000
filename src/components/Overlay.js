@@ -1,7 +1,10 @@
 import React, {useLayoutEffect, useState, useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import actions from '../actions';
 import styles from './Overlay.module.scss';
 
 const Overlay = ({element, refElement, children}) => {
+  const dispatch = useDispatch();
   const position = useDOMRect(element);
   const refPosition = useDOMRect(refElement, false);
   const [style, setStyle] = useState({});
@@ -23,8 +26,12 @@ const Overlay = ({element, refElement, children}) => {
 
   }, [position, refPosition]);
 
+  const startDrag = () => {
+    dispatch(actions.component.startDrag())
+  }
+  
   return (
-    <div className={`${styles.Overlay} ${styles.edit}`} style={style}>
+    <div draggable onDragStart={startDrag} className={`${styles.Overlay} ${styles.edit}`} style={style}>
       <div className={`${styles.OverlayHeader}`} />
       <div className={`${styles.OverlayContent}`}>
         {children}

@@ -23,3 +23,7 @@ export const NAVIGATE_UP = 'NAVIGATE_UP';
 export const NAVIGATE_DOWN = 'NAVIGATE_DOWN';
 
 export const SET_OVERLAY_TARGET = 'SET_OVERLAY_TARGET';
+
+export const START_DRAG = 'START_DRAG';
+export const DRAG_OVER = 'DRAG_OVER';
+export const DROP = 'DROP';

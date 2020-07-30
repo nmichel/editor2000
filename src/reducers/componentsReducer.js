@@ -18,7 +18,9 @@ const INITIAL_STATE = {
     [id3]: {active: false, component: 'text', parent: id4, params: {text: 'Je \n suis \n ton \n Père!'}, style: {whiteSpace: 'pre-wrap', fontSize: '20px'}},
     [id4]: {active: false, component: 'layout', parent: id5, params: {ids: [id2, id3]}, style: {flexDirection: 'column'}},
     [id5]: {active: false, component: 'layout', params: {ids: [id4, id1]}, style: {flexDirection: 'column'}},
-  }};
+  },
+  dropTargetId: null
+};
 
 function componentsReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -312,6 +314,38 @@ function componentsReducer(state = INITIAL_STATE, action) {
       return {...state, element: action.target};
     }
 
+    case ActionTypes.DRAG_OVER: {
+      if (action.id === state.dropTargetId) {
+        return state;
+      }
+
+      let currentId = state.dropTargetId;
+      let targetId = action.id;
+      let newStates = {...state.states};
+
+      if (currentId) {
+        const oldComponentState = state.states[currentId];
+        newStates[currentId] = {...oldComponentState, dropTarget: false};
+      }
+
+      const oldComponentState = state.states[targetId];
+      newStates[targetId] = {...oldComponentState, dropTarget: true};
+
+      return {...state, dropTargetId: targetId, states: newStates};
+    }
+
+    case ActionTypes.DROP: {
+      let newStates = {...state.states};
+      let currentId = state.dropTargetId;
+
+      if (currentId) {
+        const oldComponentState = state.states[currentId];
+        newStates[currentId] = {...oldComponentState, dropTarget: false};
+      }
+
+      return {...state, dropTargetId: null, states: newStates};
+    }
+    
     default:
       return state;
   }

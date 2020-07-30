@@ -110,6 +110,26 @@ const setOverlayTarget = (target) => {
   }
 }
 
+const startDrag = () => {
+  return {
+    type: ActionTypes.START_DRAG
+  }
+}
+
+const dragOver = (id) => {
+  return {
+    type: ActionTypes.DRAG_OVER,
+    id
+  }
+}
+
+const drop = (id) => {
+  return {
+    type: ActionTypes.DROP,
+    id
+  }
+}
+
 export default {
   load,
   editComponent,
@@ -125,5 +145,8 @@ export default {
   navigateNext,
   navigateUp,
   navigateDown,
-  setOverlayTarget
+  setOverlayTarget,
+  startDrag,
+  dragOver,
+  drop
 }
