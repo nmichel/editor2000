@@ -10,7 +10,9 @@ const rootReducer = combineReducers({
 });
 
 const logWrapper = (state, action) => {
-  console.log('action', action);
+  if (window.debug) {
+    console.log('action', action);
+  }
   return rootReducer(state, action);
 };
 
