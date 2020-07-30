@@ -316,12 +316,30 @@ function componentsReducer(state = INITIAL_STATE, action) {
 
     case ActionTypes.DRAG_OVER: {
       if (action.id === state.dropTargetId) {
+        // Drop target stays the same, do nothing
         return state;
       }
 
       let currentId = state.dropTargetId;
       let targetId = action.id;
       let newStates = {...state.states};
+
+      // Cannot drop inside it-self, or in a child element
+      let canDrop = true;
+      let testDropId = targetId;
+      while (canDrop && testDropId) {
+        if (testDropId === state.active) {
+          canDrop = false;
+          break;
+        }
+        testDropId = state.states[testDropId].parent;
+      }
+
+      if (!canDrop) {
+        const oldComponentState = state.states[currentId];
+        newStates[currentId] = {...oldComponentState, dropTarget: false};
+        return {...state, dropTargetId: null, states: newStates};
+      }
 
       if (currentId) {
         const oldComponentState = state.states[currentId];
