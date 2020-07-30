@@ -1,7 +1,10 @@
 .Editor {
   display: flex;
   flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 2;
   margin: 10px;
+  overflow: scroll;
 }
 
 .Header {

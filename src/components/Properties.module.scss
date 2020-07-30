@@ -1,7 +1,9 @@
 .Properties {
+  background: white;
   border: 1px solid;
+  flex-shrink: 0;
   height: 100%;
-  position: fixed;
+  margin-left: auto;
   right: 0;
 }
 
