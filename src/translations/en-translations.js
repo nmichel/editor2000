@@ -1,11 +1,25 @@
 const enTranslations = {
   "Editor": {
-      "title": "editor"
+    "title": "editor"
+  },
+
+  "Navigator": {
+    "navigate": "navigate"
+  },
+
+  "Adder": {
+    "add": "add",
+    "choose_a_component": "choose a component"
+  },
+
+  "YesNo": {
+    "yes": "yes",
+    "no": "no"
   },
 
   "Properties": {
-    "title": "propriétés",
-    "select_component": "select a component"
+    "select_component": "pick a component",
+    "title": "properties"
   }
 };
 
