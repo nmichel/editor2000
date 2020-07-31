@@ -186,8 +186,8 @@ function componentsReducer(state = INITIAL_STATE, action) {
           const ids = componentState.params.ids
           const idx = ids.indexOf(id)
           if (idx > -1) {
-            const newIds = [...ids.slice(0, idx), ...ids.slice(idx+1)]
-            newStates[k].params.ids = newIds;
+            const newIds = [...ids.slice(0, idx), ...ids.slice(idx+1)];
+            newStates[k] = {...newStates[k], params: {...newStates[k].params, ids: newIds}};
           }
         }
       })
