@@ -354,12 +354,53 @@ function componentsReducer(state = INITIAL_STATE, action) {
 
     case ActionTypes.DROP: {
       let newStates = {...state.states};
-      let currentId = state.dropTargetId;
+      let dropTargetId = state.dropTargetId;
 
-      if (currentId) {
-        const oldComponentState = state.states[currentId];
-        newStates[currentId] = {...oldComponentState, dropTarget: false};
+      if (!dropTargetId) {
+        return {...state, dropTargetId: null};
       }
+
+      const oldComponentState = state.states[dropTargetId];
+      newStates[dropTargetId] = {...oldComponentState, dropTarget: false};
+
+      // Find the target's parent 
+      const targetParentId = oldComponentState.parent;
+      if (!targetParentId) {
+        return {...state, dropTargetId: null};
+      }
+
+      const movedId = state.active;
+
+      // Remove the moved node from its parent id list
+      const movedParentId = state.states[movedId].parent;
+      if (!movedParentId) {
+        return {...state, dropTargetId: null};
+      }
+
+      const movedParent = state.states[movedParentId];
+      const ids = movedParent.params.ids;
+      const idx = ids.indexOf(movedId);
+      if (idx === -1) {
+        return {...state, dropTargetId: null};
+      }
+
+      const newIds = [...ids.slice(0, idx), ...ids.slice(idx+1)];
+      newStates[movedParentId] = {...movedParent, params: {...movedParent.params, ids: newIds}};
+
+      // Insert the moved node just before the target node in the latter parent id list
+      const targetParent = newStates[targetParentId];
+      const targetParentIds = targetParent.params.ids
+      const idx1 = targetParentIds.indexOf(dropTargetId)
+      if (idx1 === -1) {
+        return {...state, dropTargetId: null};
+      }
+
+      const newIds1 = [...targetParentIds.slice(0, idx1), movedId, ...targetParentIds.slice(idx1)];
+      newStates[targetParentId] = {...targetParent, params: {...targetParent.params, ids: newIds1}};
+
+      // Update moved node parent
+      const moved = state.states[movedId];
+      newStates[movedId] = {...moved, parent: targetParentId};
 
       return {...state, dropTargetId: null, states: newStates};
     }
