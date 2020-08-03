@@ -45,64 +45,30 @@ function parseMetricProp(value, suffix = "px") {
 }
 
 const useDOMRect = (element, withMargin = true) => {
-  const [position, setPosition] = useState(null);
+  const [rect, setRect] = useState(null);
 
   useLayoutEffect(() => {
     if (!element) {
       return;
     }
 
-    const refElementPositionList = element.getClientRects();
-    const refElementPosition = refElementPositionList && refElementPositionList[0];
-    if (!refElementPosition) {
+    const refElementRectList = element.getClientRects();
+    const refElementRect = refElementRectList && refElementRectList[0];
+    if (!refElementRect) {
       return;
     }
 
-    if (withMargin) {
-      const style = window.getComputedStyle(element);
-      const mt = parseMetricProp(style.getPropertyValue('margin-top'));
-      const ml = parseMetricProp(style.getPropertyValue('margin-left'));
-      const mb = parseMetricProp(style.getPropertyValue('margin-bottom'));
-      const mr = parseMetricProp(style.getPropertyValue('margin-right'));
-  
-      let adjustedRect = {};
-      adjustedRect.left = refElementPosition.left - ml;
-      adjustedRect.top = refElementPosition.top - mt;
-      adjustedRect.width = refElementPosition.width + ml + mr;
-      adjustedRect.height = refElementPosition.height + mt + mb;
-  
-      setPosition(adjustedRect);
-  
-    }
-    else {
-      setPosition(refElementPosition);
-    }
+    const overlayRect = withMargin ? adjustRectWithMargin(refElementRect, element) : refElementRect;
+    setRect(overlayRect);
 
     const refresherId = setInterval(() => {
-      const newPositionList = element.getClientRects();
-      const newPosition = newPositionList && newPositionList[0];
-      setPosition((oldPosition) => {
+      const newRectList = element.getClientRects();
+      const newRect = newRectList && newRectList[0];
 
-        if (withMargin) {
-          const style = window.getComputedStyle(element);
-          const mt = parseMetricProp(style.getPropertyValue('margin-top'));
-          const ml = parseMetricProp(style.getPropertyValue('margin-left'));
-          const mb = parseMetricProp(style.getPropertyValue('margin-bottom'));
-          const mr = parseMetricProp(style.getPropertyValue('margin-right'));
-      
-          let adjustedRect = {};
-          adjustedRect.left = newPosition.left - ml;
-          adjustedRect.top = newPosition.top - mt;
-          adjustedRect.width = newPosition.width + ml + mr;
-          adjustedRect.height = newPosition.height + mt + mb;
-      
-          const areSameDOMRect = identicalDOMRect(oldPosition, adjustedRect);
-          return areSameDOMRect ? oldPosition : adjustedRect;
-        }
-        else {
-          const areSameDOMRect = identicalDOMRect(oldPosition, newPosition);
-          return areSameDOMRect ? oldPosition : newPosition;
-        }
+      setRect((oldRect) => {
+        const overlayRect = withMargin ? adjustRectWithMargin(newRect, element) : newRect;
+        const areSameRect = identicalRect(oldRect, overlayRect);
+        return areSameRect ? oldRect : overlayRect;
       });
     }, REFRESH_DELAY_MS);
 
@@ -110,23 +76,37 @@ const useDOMRect = (element, withMargin = true) => {
       clearInterval(refresherId);
     };
 
-  }, [element]);
+  }, [element, withMargin]);
 
-  return position;
+  return rect;
 };
 
 const REFRESH_DELAY_MS = 300;
 
-const identicalDOMRect = (r1, r2) => {
-  if (!r1 || !r2) return false;
+function adjustRectWithMargin(rect, element) {
+  const style = window.getComputedStyle(element);
+  const mt = parseMetricProp(style.getPropertyValue('margin-top'));
+  const ml = parseMetricProp(style.getPropertyValue('margin-left'));
+  const mb = parseMetricProp(style.getPropertyValue('margin-bottom'));
+  const mr = parseMetricProp(style.getPropertyValue('margin-right'));
 
   return (
-//    r1.x === r2.x && 
-//    r1.y === r2.y && 
+    {
+      left: rect.left - ml,
+      top: rect.top - mt,
+      width: rect.width + ml + mr,
+      height: rect.height + mt + mb
+    }
+  );
+}
+
+const identicalRect = (r1, r2) => {
+  if (!r1 || !r2) return false;
+
+  // Compare only used properties
+  return (
     r1.top === r2.top && 
     r1.left === r2.left && 
-//    r1.right === r2.right && 
-//      r1.bottom === r2.bottom && 
     r1.width === r2.width && 
     r1.height === r2.height 
   );
