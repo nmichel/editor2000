@@ -3,21 +3,15 @@ import * as ActionTypes from '../constants/action-types';
 import {getDefaultParamsForName} from '../components/registry';
 
 const id1 = uuidv4();
-const id2 = uuidv4();
-const id3 = uuidv4();
-const id4 = uuidv4();
-const id5 = uuidv4();
+
+const HARDCODED_SAVED_DATA = '{"active":"95c6fe16-dc65-4eec-88b8-d08e6907813f","root":"b5d02377-f7d7-469e-b92d-8bf78522a76f","states":{"95c6fe16-dc65-4eec-88b8-d08e6907813f":{"active":true,"component":"text","parent":"b5d02377-f7d7-469e-b92d-8bf78522a76f","params":{"text":"hello \n world!"},"style":{"whiteSpace":"pre-wrap"}},"2cd9ba51-86da-4acf-95e9-de7c283d66f7":{"active":false,"component":"image","parent":"2bbf5ea0-e94a-4429-82d8-f1235ef4fbfe","params":{"url":"https://picsum.photos/id/249/200/300"},"style":{}},"84d6ce19-dd60-43ee-b0a7-bda90b96b7d0":{"active":false,"component":"text","parent":"2bbf5ea0-e94a-4429-82d8-f1235ef4fbfe","params":{"text":"Under the bridge"},"style":{"whiteSpace":"pre-wrap","fontSize":"20px"}},"2bbf5ea0-e94a-4429-82d8-f1235ef4fbfe":{"active":false,"component":"layout","parent":"b5d02377-f7d7-469e-b92d-8bf78522a76f","params":{"ids":["2cd9ba51-86da-4acf-95e9-de7c283d66f7","84d6ce19-dd60-43ee-b0a7-bda90b96b7d0"]},"style":{"flexDirection":"column"}},"b5d02377-f7d7-469e-b92d-8bf78522a76f":{"active":false,"component":"layout","params":{"ids":["e0c27bec-0e90-4422-869a-76740471165f","936f047f-45bf-4804-a638-8678f1f997cd","800b3628-fe62-4e14-90e0-2ac4f7e50234","2bbf5ea0-e94a-4429-82d8-f1235ef4fbfe","95c6fe16-dc65-4eec-88b8-d08e6907813f"]},"style":{"flexDirection":"row","display":"flex"}},"800b3628-fe62-4e14-90e0-2ac4f7e50234":{"parent":"b5d02377-f7d7-469e-b92d-8bf78522a76f","active":false,"component":"layout","params":{"ids":["c4ef5937-4ba0-43d0-bc94-551adb4f2638"]},"style":{"alignItems":"center","display":"flex","flexDirection":"column","padding":"1em"}},"936f047f-45bf-4804-a638-8678f1f997cd":{"parent":"b5d02377-f7d7-469e-b92d-8bf78522a76f","active":false,"component":"layout","params":{"ids":["c991db7b-95a5-43fa-a98a-2de1ca57f01c"]},"style":{"alignItems":"center","display":"flex","flexDirection":"column","padding":"1em"}},"c991db7b-95a5-43fa-a98a-2de1ca57f01c":{"parent":"936f047f-45bf-4804-a638-8678f1f997cd","active":false,"component":"image","params":{"url":"https://m.media-amazon.com/images/M/MV5BZWIxNzM5YzQtY2FmMS00Yjc3LWI1ZjUtNGVjMjMzZTIxZTIxXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SY1000_CR0,0,671,1000_AL_.jpg"},"style":{}},"c4ef5937-4ba0-43d0-bc94-551adb4f2638":{"parent":"800b3628-fe62-4e14-90e0-2ac4f7e50234","active":false,"component":"image","params":{"url":"https://m.media-amazon.com/images/M/MV5BZjRlNDUxZjAtOGQ4OC00OTNlLTgxNmQtYTBmMDgwZmNmNjkxXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SY1000_CR0,0,666,1000_AL_.jpg"},"style":{}},"e0c27bec-0e90-4422-869a-76740471165f":{"parent":"b5d02377-f7d7-469e-b92d-8bf78522a76f","active":false,"component":"layout","params":{"ids":["432c5067-4b29-4e2f-b5da-4510bee3f225"]},"style":{"alignItems":"center","display":"flex","flexDirection":"column","padding":"1em"}},"432c5067-4b29-4e2f-b5da-4510bee3f225":{"parent":"e0c27bec-0e90-4422-869a-76740471165f","active":false,"component":"image","params":{"url":"https://m.media-amazon.com/images/M/MV5BMjM1NjE5NjQxN15BMl5BanBnXkFtZTgwMjYzMzQxMDE@._V1_.jpg"},"style":{}}},"dropTargetId":null}';
 
 const INITIAL_STATE = {
   active: null,
   element: null,
-  root: id5,
+  root: id1,
   states: {
-    [id1]: {active: false, component: 'text', parent: id5, params: {text: 'hello \n world!'}, style: {whiteSpace: 'pre-wrap'}},
-    [id2]: {active: false, component: 'image', parent: id4, params: {url: 'https://picsum.photos/id/249/200/300'}, style: {}},
-    [id3]: {active: false, component: 'text', parent: id4, params: {text: 'Je \n suis \n ton \n Père!'}, style: {whiteSpace: 'pre-wrap', fontSize: '20px'}},
-    [id4]: {active: false, component: 'layout', parent: id5, params: {ids: [id2, id3]}, style: {flexDirection: 'column'}},
-    [id5]: {active: false, component: 'layout', params: {ids: [id4, id1]}, style: {flexDirection: 'column'}},
+    [id1]: {active: false, component: 'layout', params: {ids: []}, style: {display: 'flex', flexDirection: 'column', padding: '1em'}},
   },
   dropTargetId: null
 };
@@ -27,7 +21,7 @@ function componentsReducer(state = INITIAL_STATE, action) {
     case ActionTypes.LOAD: {
       const savedState = localStorage.getItem('component_editor');
       if (!savedState) {
-        return INITIAL_STATE;
+        return JSON.parse(HARDCODED_SAVED_DATA);
       }
 
       return JSON.parse(savedState);
