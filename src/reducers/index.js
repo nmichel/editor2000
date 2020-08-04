@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import componentsReducer from './componentsReducer';
 import langReducer from './langReducer';
 import editorReducer from './editorReducer';
+import { cascadeReducers } from '../misc/reduxtils';
 
 const rootReducer = combineReducers({
   components: componentsReducer,
@@ -9,11 +10,11 @@ const rootReducer = combineReducers({
   editor: editorReducer
 });
 
-const logWrapper = (state, action) => {
+const logReducer = (state, action) => {
   if (window.debug) {
     console.log('action', action);
   }
-  return rootReducer(state, action);
+  return state;
 };
 
-export default logWrapper;
+export default cascadeReducers(logReducer, rootReducer);

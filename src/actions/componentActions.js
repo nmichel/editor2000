@@ -13,116 +13,98 @@ const editComponent = createAction(ActionTypes.EDIT_COMPONENT, (id) => {
 
 const cancelEdition = createAction(ActionTypes.CANCEL_EDITION);
 
-const setParamValue = (id, param, value) => {
+const setParamValue = createAction(ActionTypes.SET_PARAM_VALUE, (id, param, value) => {
   return {
-    type: ActionTypes.SET_PARAM_VALUE,
     id,
     payload: { param, value }
   };
-};
+});
 
-const setStyleValue = (id, property, value) => {
+const setStyleValue = createAction(ActionTypes.SET_STYLE_VALUE, (id, property, value) => {
   return {
-    type: ActionTypes.SET_STYLE_VALUE,
     id,
     payload: { params: { property, value } }
   }
-};
+});
 
-const addStyle = (id, property, value) => {
+const addStyle = createAction(ActionTypes.ADD_STYLE, (id, property, value) => {
   return {
-    type: ActionTypes.ADD_STYLE,
     id,
     payload: { params: { property, value } }
   }
-};
+});
 
-const deleteStyle = (id, property) => {
+const deleteStyle = createAction(ActionTypes.DELETE_STYLE, (id, property) => {
   return {
-    type: ActionTypes.DELETE_STYLE,
     id,
     payload: { params: { property } }
   }
-};
+});
 
-const appendComponent = (id, name) => {
+const appendComponent = createAction(ActionTypes.APPEND_COMPONENT, (id, name) => {
   return {
-    type: ActionTypes.APPEND_COMPONENT,
     id,
     payload: { params: { name } }
   }
-}
+});
 
-const prependComponent = (id, name) => {
+const prependComponent = createAction(ActionTypes.PREPEND_COMPONENT, (id, name) => {
   return {
-    type: ActionTypes.PREPEND_COMPONENT,
     id,
     payload: { params: { name } }
   }
-}
+});
 
-const deleteComponent = (id, name) => {
+const deleteComponent = createAction(ActionTypes.DELETE_COMPONENT, (id, name) => {
   return {
-    type: ActionTypes.DELETE_COMPONENT,
     id,
     payload: {}
   }
-}
+});
 
-const navigatePrev = (id) => {
+const navigatePrev = createAction(ActionTypes.NAVIGATE_PREV, (id) => {
   return {
-    type: ActionTypes.NAVIGATE_PREV,
     id
   }
-}
+});
 
-const navigateNext = (id) => {
+const navigateNext = createAction(ActionTypes.NAVIGATE_NEXT, (id) => {
   return {
-    type: ActionTypes.NAVIGATE_NEXT,
     id
   }
-}
+});
 
-const navigateUp = (id) => {
+const navigateUp = createAction(ActionTypes.NAVIGATE_UP, (id) => {
   return {
-    type: ActionTypes.NAVIGATE_UP,
     id
   }
-}
+});
 
-const navigateDown = (id) => {
+const navigateDown = createAction(ActionTypes.NAVIGATE_DOWN, (id) => {
   return {
-    type: ActionTypes.NAVIGATE_DOWN,
     id
   }
-}
+});
 
-const setOverlayTarget = (target) => {
+const setOverlayTarget = createAction(ActionTypes.SET_OVERLAY_TARGET, (target) => {
   return {
-    type: ActionTypes.SET_OVERLAY_TARGET,
     target
   }
-}
+});
 
-const startDrag = () => {
-  return {
-    type: ActionTypes.START_DRAG
-  }
-}
+const startDrag = createAction(ActionTypes.START_DRAG);
 
-const dragOver = (id) => {
+const dragOver = createAction(ActionTypes.DRAG_OVER, (id) => {
   return {
-    type: ActionTypes.DRAG_OVER,
     id
   }
-}
+});
 
-const drop = (id) => {
+const drop = createAction(ActionTypes.DROP, (id) => {
   return {
-    type: ActionTypes.DROP,
     id
   }
-}
+});
 
 export default {
   load,

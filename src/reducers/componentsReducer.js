@@ -1,8 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import * as ActionTypes from '../constants/action-types';
 import Actions from '../actions/componentActions';
-import {getDefaultParamsForName} from '../components/registry';
-import { createReducer, cascadeReducers } from '../misc/reduxtils';
+import { getDefaultParamsForName } from '../components/registry';
+import { createReducer } from '../misc/reduxtils';
 import HARDCODED_SAVED_DATA from './movies';
 
 const id1 = uuidv4();
@@ -17,7 +16,7 @@ const INITIAL_STATE = {
   dropTargetId: null
 };
 
-const newReducer = createReducer(INITIAL_STATE, {
+export default createReducer(INITIAL_STATE, {
   [Actions.load]: (_state, _action) => {
     const savedState = localStorage.getItem('component_editor');
     const dataToLoad = savedState || HARDCODED_SAVED_DATA;
@@ -57,351 +56,342 @@ const newReducer = createReducer(INITIAL_STATE, {
     else {
       return {...state, active: null, element: null};
     }
-  }
-});
+  },
 
-function componentsReducer(state = INITIAL_STATE, action) {
-  switch (action.type) {
-    case ActionTypes.SET_PARAM_VALUE: {
-      const id = action.id
-      const newStates = {...state.states};
+  [Actions.setParamValue]: (state, action) => {
+    const id = action.id
+    const newStates = {...state.states};
 
-      const oldComponentState = state.states[id];
-      newStates[id] = {...oldComponentState, params: {...oldComponentState.params, [action.payload.param]: action.payload.value}};
-  
-      return {...state, states: newStates};
+    const oldComponentState = state.states[id];
+    newStates[id] = {...oldComponentState, params: {...oldComponentState.params, [action.payload.param]: action.payload.value}};
+
+    return {...state, states: newStates};
+  },
+
+  [Actions.setStyleValue]: (state, action) => {
+    const id = action.id
+    const newState = {...state, states: {...state.states}};
+    const newStates = newState.states;
+    const params = action.payload.params;
+    const oldStyle = newStates[id].style;
+    const newStyle = {...oldStyle, [params.property]: params.value};
+
+    newStates[id] = {
+      ...newStates[id],
+      style: newStyle
+    }
+    return newState;
+  },
+
+  [Actions.addStyle]: (state, action) => {
+    const id = action.id
+    const newState = {...state, states: {...state.states}};
+    const newStates = newState.states;
+    const params = action.payload.params;
+    const oldStyle = newStates[id].style;
+    const newStyle = {...oldStyle, [params.property]: params.value};
+
+    newStates[id] = {
+      ...newStates[id],
+      style: newStyle
+    }
+    return newState;
+  },
+
+  [Actions.deleteStyle]: (state, action) => {
+    const id = action.id
+    const newState = {...state, states: {...state.states}};
+    const newStates = newState.states;
+    const params = action.payload.params;
+    const oldStyle = newStates[id].style;
+    const {[params.property]: _, ...newStyle} = oldStyle;
+
+    newStates[id] = {
+      ...newStates[id],
+      style: newStyle
+    }
+    return newState;
+  },
+
+  [Actions.appendComponent]: (state, action) => {
+    const id = action.id
+    const newState = {...state, states: {...state.states}};
+    const newStates = newState.states;
+    const params = action.payload.params;
+    const targetComponentType = (state.states[id] && state.states[id].component)|| "";
+    if (targetComponentType !== 'layout') {
+      return state;
     }
 
-    case ActionTypes.SET_STYLE_VALUE: {
-      const id = action.id
-      const newState = {...state, states: {...state.states}};
-      const newStates = newState.states;
-      const params = action.payload.params;
-      const oldStyle = newStates[id].style;
-      const newStyle = {...oldStyle, [params.property]: params.value};
+    const newComponentId = uuidv4();
+    newStates[newComponentId] = {parent: id, active: false, ...getDefaultParamsForName(params.name)};
 
-      newStates[id] = {
-        ...newStates[id],
-        style: newStyle
-      }
-      return newState;
+    const newIds = [...newStates[id].params.ids, newComponentId];
+    newStates[id] = {
+      ...newStates[id],
+      params: {ids: newIds}
     }
 
-    case ActionTypes.ADD_STYLE: {
-      const id = action.id
-      const newState = {...state, states: {...state.states}};
-      const newStates = newState.states;
-      const params = action.payload.params;
-      const oldStyle = newStates[id].style;
-      const newStyle = {...oldStyle, [params.property]: params.value};
+    return newState;
+  },
 
-      newStates[id] = {
-        ...newStates[id],
-        style: newStyle
-      }
-      return newState;
+  [Actions.prependComponent]: (state, action) => {
+    const id = action.id
+    const newState = {...state, states: {...state.states}};
+    const newStates = newState.states;
+    const params = action.payload.params;
+    const targetComponentType = (state.states[id] && state.states[id].component)|| "";
+    if (targetComponentType !== 'layout') {
+      return state;
     }
 
-    case ActionTypes.DELETE_STYLE: {
-      const id = action.id
-      const newState = {...state, states: {...state.states}};
-      const newStates = newState.states;
-      const params = action.payload.params;
-      const oldStyle = newStates[id].style;
-      const {[params.property]: _, ...newStyle} = oldStyle;
+    const newComponentId = uuidv4();
+    newStates[newComponentId] = {parent: id, active: false, ...getDefaultParamsForName(params.name)};
 
-      newStates[id] = {
-        ...newStates[id],
-        style: newStyle
-      }
-      return newState;
+    const newIds = [newComponentId, ...newStates[id].params.ids];
+    newStates[id] = {
+      ...newStates[id],
+      params: {ids: newIds}
     }
 
-    case ActionTypes.APPEND_COMPONENT: {
-      const id = action.id
-      const newState = {...state, states: {...state.states}};
-      const newStates = newState.states;
-      const params = action.payload.params;
-      const targetComponentType = (state.states[id] && state.states[id].component)|| "";
-      if (targetComponentType !== 'layout') {
-        return state;
-      }
+    return newState;
+  },
 
-      const newComponentId = uuidv4();
-      newStates[newComponentId] = {parent: id, active: false, ...getDefaultParamsForName(params.name)};
-
-      const newIds = [...newStates[id].params.ids, newComponentId];
-      newStates[id] = {
-        ...newStates[id],
-        params: {ids: newIds}
-      }
-
-      return newState;
+  [Actions.deleteComponent]: (state, action) => {
+    const id = action.id
+    if (id === state.root) {
+      return state;
     }
 
-    case ActionTypes.PREPEND_COMPONENT: {
-      const id = action.id
-      const newState = {...state, states: {...state.states}};
-      const newStates = newState.states;
-      const params = action.payload.params;
-      const targetComponentType = (state.states[id] && state.states[id].component)|| "";
-      if (targetComponentType !== 'layout') {
-        return state;
-      }
+    const newState = {...state, states: {...state.states}};
+    const newStates = newState.states;
 
-      const newComponentId = uuidv4();
-      newStates[newComponentId] = {parent: id, active: false, ...getDefaultParamsForName(params.name)};
-
-      const newIds = [newComponentId, ...newStates[id].params.ids];
-      newStates[id] = {
-        ...newStates[id],
-        params: {ids: newIds}
-      }
-
-      return newState;
+    if (id === newState.active) {
+      newState.active = null;
     }
 
-    case ActionTypes.DELETE_COMPONENT: {
-      const id = action.id
-      if (id === state.root) {
-        return state;
+    delete newStates[id];
+
+    Object.keys(newStates).forEach((k) => {
+      const componentState = newStates[k];
+      if (componentState.params.ids !== undefined) {
+        const ids = componentState.params.ids
+        const idx = ids.indexOf(id)
+        if (idx > -1) {
+          const newIds = [...ids.slice(0, idx), ...ids.slice(idx+1)];
+          newStates[k] = {...newStates[k], params: {...newStates[k].params, ids: newIds}};
+        }
       }
+    })
 
-      const newState = {...state, states: {...state.states}};
-      const newStates = newState.states;
-
-      if (id === newState.active) {
-        newState.active = null;
-      }
-
-      delete newStates[id];
-
+    let hasOrphans = true;
+    while (hasOrphans) {
+      hasOrphans = false;
       Object.keys(newStates).forEach((k) => {
         const componentState = newStates[k];
-        if (componentState.params.ids !== undefined) {
-          const ids = componentState.params.ids
-          const idx = ids.indexOf(id)
-          if (idx > -1) {
-            const newIds = [...ids.slice(0, idx), ...ids.slice(idx+1)];
-            newStates[k] = {...newStates[k], params: {...newStates[k].params, ids: newIds}};
-          }
+        if (k !== state.root && !newStates[componentState.parent]) {
+          hasOrphans = true;
+          delete newStates[k];
         }
       })
-
-      let hasOrphans = true;
-      while (hasOrphans) {
-        hasOrphans = false;
-        Object.keys(newStates).forEach((k) => {
-          const componentState = newStates[k];
-          if (k !== state.root && !newStates[componentState.parent]) {
-            hasOrphans = true;
-            delete newStates[k];
-          }
-        })
-      }
-
-      return newState;
     }
 
-    case ActionTypes.NAVIGATE_PREV: {
-      const currentId = state.active
-      const currentState = state.states[currentId];
-      const parentId = currentState.parent;
-      if (!parentId) {
-        return state;
-      }
+    return newState;
+  },
 
-      const parent = state.states[parentId];
-      const ids = parent.params.ids;
-      const idx = ids.indexOf(currentId);
-      if (idx === 0) {
-        return state;
-      }
-
-      let targetId = ids[idx-1];
-      let newStates = {...state.states};
-
-      if (currentId) {
-        const oldComponentState = state.states[currentId];
-        newStates[currentId] = {...oldComponentState, active: false};
-      }
-
-      const oldComponentState = state.states[targetId];
-      newStates[targetId] = {...oldComponentState, active: true};
-
-      return {...state, active: targetId, states: newStates};
+  [Actions.navigatePrev]: (state, _action) => {
+    const currentId = state.active
+    const currentState = state.states[currentId];
+    const parentId = currentState.parent;
+    if (!parentId) {
+      return state;
     }
 
-    case ActionTypes.NAVIGATE_NEXT: {
-      const currentId = state.active
-      const currentState = state.states[currentId];
-      const parentId = currentState.parent;
-      if (!parentId) {
-        return state;
-      }
-
-      const parent = state.states[parentId];
-      const ids = parent.params.ids;
-      const idx = ids.indexOf(currentId);
-      if (idx === ids.length-1) {
-        return state;
-      }
-
-      let targetId = ids[idx+1];
-      let newStates = {...state.states};
-
-      if (currentId) {
-        const oldComponentState = state.states[currentId];
-        newStates[currentId] = {...oldComponentState, active: false};
-      }
-
-      const oldComponentState = state.states[targetId];
-      newStates[targetId] = {...oldComponentState, active: true};
-
-      return {...state, active: targetId, states: newStates};
+    const parent = state.states[parentId];
+    const ids = parent.params.ids;
+    const idx = ids.indexOf(currentId);
+    if (idx === 0) {
+      return state;
     }
 
-    case ActionTypes.NAVIGATE_UP: {
-      const currentId = action.id
-      const currentState = state.states[currentId];
-      const parentId = currentState.parent;
-      if (!parentId) {
-        return state;
-      }
+    let targetId = ids[idx-1];
+    let newStates = {...state.states};
 
-      let targetId = parentId;
-      let newStates = {...state.states};
-
-      if (currentId) {
-        const oldComponentState = state.states[currentId];
-        newStates[currentId] = {...oldComponentState, active: false};
-      }
-
-      const oldComponentState = state.states[targetId];
-      newStates[targetId] = {...oldComponentState, active: true};
-
-      return {...state, active: targetId, states: newStates};
+    if (currentId) {
+      const oldComponentState = state.states[currentId];
+      newStates[currentId] = {...oldComponentState, active: false};
     }
 
-    case ActionTypes.NAVIGATE_DOWN: {
-      const currentId = action.id;
-      const currentState = state.states[currentId];
-      if (!currentState.params.ids || currentState.params.ids.length === 0) {
-        return state;
-      }
+    const oldComponentState = state.states[targetId];
+    newStates[targetId] = {...oldComponentState, active: true};
 
-      let targetId = currentState.params.ids[0];
-      let newStates = {...state.states};
+    return {...state, active: targetId, states: newStates};
+  },
 
-      if (currentId) {
-        const oldComponentState = state.states[currentId];
-        newStates[currentId] = {...oldComponentState, active: false};
-      }
-
-      const oldComponentState = state.states[targetId];
-      newStates[targetId] = {...oldComponentState, active: true};
-
-      return {...state, active: targetId, states: newStates};
+  [Actions.navigateNext]: (state, action) => {
+    const currentId = state.active
+    const currentState = state.states[currentId];
+    const parentId = currentState.parent;
+    if (!parentId) {
+      return state;
     }
 
-    case ActionTypes.SET_OVERLAY_TARGET: {
-      return {...state, element: action.target};
+    const parent = state.states[parentId];
+    const ids = parent.params.ids;
+    const idx = ids.indexOf(currentId);
+    if (idx === ids.length-1) {
+      return state;
     }
 
-    case ActionTypes.DRAG_OVER: {
-      if (action.id === state.dropTargetId) {
-        // Drop target stays the same, do nothing
-        return state;
-      }
+    let targetId = ids[idx+1];
+    let newStates = {...state.states};
 
-      let currentId = state.dropTargetId;
-      let targetId = action.id;
-      let newStates = {...state.states};
-
-      // Cannot drop inside it-self, or in a child element
-      let canDrop = true;
-      let testDropId = targetId;
-      while (canDrop && testDropId) {
-        if (testDropId === state.active) {
-          canDrop = false;
-          break;
-        }
-        testDropId = state.states[testDropId].parent;
-      }
-
-      if (!canDrop) {
-        const oldComponentState = state.states[currentId];
-        newStates[currentId] = {...oldComponentState, dropTarget: false};
-        return {...state, dropTargetId: null, states: newStates};
-      }
-
-      if (currentId) {
-        const oldComponentState = state.states[currentId];
-        newStates[currentId] = {...oldComponentState, dropTarget: false};
-      }
-
-      const oldComponentState = state.states[targetId];
-      newStates[targetId] = {...oldComponentState, dropTarget: true};
-
-      return {...state, dropTargetId: targetId, states: newStates};
+    if (currentId) {
+      const oldComponentState = state.states[currentId];
+      newStates[currentId] = {...oldComponentState, active: false};
     }
 
-    case ActionTypes.DROP: {
-      let newStates = {...state.states};
-      let dropTargetId = state.dropTargetId;
+    const oldComponentState = state.states[targetId];
+    newStates[targetId] = {...oldComponentState, active: true};
 
-      if (!dropTargetId) {
-        return {...state, dropTargetId: null};
+    return {...state, active: targetId, states: newStates};
+  },
+
+  [Actions.navigateUp]: (state, action) => {
+    const currentId = action.id
+    const currentState = state.states[currentId];
+    const parentId = currentState.parent;
+    if (!parentId) {
+      return state;
+    }
+
+    let targetId = parentId;
+    let newStates = {...state.states};
+
+    if (currentId) {
+      const oldComponentState = state.states[currentId];
+      newStates[currentId] = {...oldComponentState, active: false};
+    }
+
+    const oldComponentState = state.states[targetId];
+    newStates[targetId] = {...oldComponentState, active: true};
+
+    return {...state, active: targetId, states: newStates};
+  },
+
+  [Actions.navigateDown]: (state, action) => {
+    const currentId = action.id;
+    const currentState = state.states[currentId];
+    if (!currentState.params.ids || currentState.params.ids.length === 0) {
+      return state;
+    }
+
+    let targetId = currentState.params.ids[0];
+    let newStates = {...state.states};
+
+    if (currentId) {
+      const oldComponentState = state.states[currentId];
+      newStates[currentId] = {...oldComponentState, active: false};
+    }
+
+    const oldComponentState = state.states[targetId];
+    newStates[targetId] = {...oldComponentState, active: true};
+
+    return {...state, active: targetId, states: newStates};
+  },
+
+  [Actions.setOverlayTarget]: (state, action) => {
+    return {...state, element: action.target};
+  },
+
+  [Actions.dragOver]: (state, action) => {
+    if (action.id === state.dropTargetId) {
+      // Drop target stays the same, do nothing
+      return state;
+    }
+
+    let currentId = state.dropTargetId;
+    let targetId = action.id;
+    let newStates = {...state.states};
+
+    // Cannot drop inside it-self, or in a child element
+    let canDrop = true;
+    let testDropId = targetId;
+    while (canDrop && testDropId) {
+      if (testDropId === state.active) {
+        canDrop = false;
+        break;
       }
+      testDropId = state.states[testDropId].parent;
+    }
 
-      const oldComponentState = state.states[dropTargetId];
-      newStates[dropTargetId] = {...oldComponentState, dropTarget: false};
-
-      // Find the target's parent 
-      const targetParentId = oldComponentState.parent;
-      if (!targetParentId) {
-        return {...state, dropTargetId: null};
-      }
-
-      const movedId = state.active;
-
-      // Remove the moved node from its parent id list
-      const movedParentId = state.states[movedId].parent;
-      if (!movedParentId) {
-        return {...state, dropTargetId: null};
-      }
-
-      const movedParent = state.states[movedParentId];
-      const ids = movedParent.params.ids;
-      const idx = ids.indexOf(movedId);
-      if (idx === -1) {
-        return {...state, dropTargetId: null};
-      }
-
-      const newIds = [...ids.slice(0, idx), ...ids.slice(idx+1)];
-      newStates[movedParentId] = {...movedParent, params: {...movedParent.params, ids: newIds}};
-
-      // Insert the moved node just before the target node in the latter parent id list
-      const targetParent = newStates[targetParentId];
-      const targetParentIds = targetParent.params.ids
-      const idx1 = targetParentIds.indexOf(dropTargetId)
-      if (idx1 === -1) {
-        return {...state, dropTargetId: null};
-      }
-
-      const newIds1 = [...targetParentIds.slice(0, idx1), movedId, ...targetParentIds.slice(idx1)];
-      newStates[targetParentId] = {...targetParent, params: {...targetParent.params, ids: newIds1}};
-
-      // Update moved node parent
-      const moved = state.states[movedId];
-      newStates[movedId] = {...moved, parent: targetParentId};
-
+    if (!canDrop) {
+      const oldComponentState = state.states[currentId];
+      newStates[currentId] = {...oldComponentState, dropTarget: false};
       return {...state, dropTargetId: null, states: newStates};
     }
-    
-    default:
-      return state;
-  }
-};
 
-export default cascadeReducers(newReducer, componentsReducer);
+    if (currentId) {
+      const oldComponentState = state.states[currentId];
+      newStates[currentId] = {...oldComponentState, dropTarget: false};
+    }
+
+    const oldComponentState = state.states[targetId];
+    newStates[targetId] = {...oldComponentState, dropTarget: true};
+
+    return {...state, dropTargetId: targetId, states: newStates};
+  },
+
+  [Actions.drop]: (state, _action) => {
+    let newStates = {...state.states};
+    let dropTargetId = state.dropTargetId;
+
+    if (!dropTargetId) {
+      return {...state, dropTargetId: null};
+    }
+
+    const oldComponentState = state.states[dropTargetId];
+    newStates[dropTargetId] = {...oldComponentState, dropTarget: false};
+
+    // Find the target's parent 
+    const targetParentId = oldComponentState.parent;
+    if (!targetParentId) {
+      return {...state, dropTargetId: null};
+    }
+
+    const movedId = state.active;
+
+    // Remove the moved node from its parent id list
+    const movedParentId = state.states[movedId].parent;
+    if (!movedParentId) {
+      return {...state, dropTargetId: null};
+    }
+
+    const movedParent = state.states[movedParentId];
+    const ids = movedParent.params.ids;
+    const idx = ids.indexOf(movedId);
+    if (idx === -1) {
+      return {...state, dropTargetId: null};
+    }
+
+    const newIds = [...ids.slice(0, idx), ...ids.slice(idx+1)];
+    newStates[movedParentId] = {...movedParent, params: {...movedParent.params, ids: newIds}};
+
+    // Insert the moved node just before the target node in the latter parent id list
+    const targetParent = newStates[targetParentId];
+    const targetParentIds = targetParent.params.ids
+    const idx1 = targetParentIds.indexOf(dropTargetId)
+    if (idx1 === -1) {
+      return {...state, dropTargetId: null};
+    }
+
+    const newIds1 = [...targetParentIds.slice(0, idx1), movedId, ...targetParentIds.slice(idx1)];
+    newStates[targetParentId] = {...targetParent, params: {...targetParent.params, ids: newIds1}};
+
+    // Update moved node parent
+    const moved = state.states[movedId];
+    newStates[movedId] = {...moved, parent: targetParentId};
+
+    return {...state, dropTargetId: null, states: newStates};
+  }
+});
