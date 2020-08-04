@@ -1,23 +1,17 @@
 import * as ActionTypes from '../constants/action-types'; 
+import { createAction } from '../misc/reduxtils';
 
-const load = () => {
-  return {
-    type: ActionTypes.LOAD
-  }
-}
+const load = createAction(ActionTypes.LOAD);
 
-const editComponent = (id) => {
+const save = createAction(ActionTypes.SAVE);
+
+const editComponent = createAction(ActionTypes.EDIT_COMPONENT, (id) => {
   return { 
-    type: ActionTypes.EDIT_COMPONENT,
     id
   };
-};
+});
 
-const cancelEdition = () => {
-  return {
-    type: ActionTypes.CANCEL_EDITION
-  };
-};
+const cancelEdition = createAction(ActionTypes.CANCEL_EDITION);
 
 const setParamValue = (id, param, value) => {
   return {
@@ -132,6 +126,7 @@ const drop = (id) => {
 
 export default {
   load,
+  save,
   editComponent,
   cancelEdition,
   setParamValue,

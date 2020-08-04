@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import * as ActionTypes from '../constants/action-types';
+import Actions from '../actions/componentActions';
 import {getDefaultParamsForName} from '../components/registry';
+import { createReducer, cascadeReducers } from '../misc/reduxtils';
 import HARDCODED_SAVED_DATA from './movies';
 
 const id1 = uuidv4();
@@ -15,52 +17,51 @@ const INITIAL_STATE = {
   dropTargetId: null
 };
 
+const newReducer = createReducer(INITIAL_STATE, {
+  [Actions.load]: (_state, _action) => {
+    const savedState = localStorage.getItem('component_editor');
+    const dataToLoad = savedState || HARDCODED_SAVED_DATA;
+    return JSON.parse(dataToLoad);
+  },
+
+  [Actions.save]: (state, _action) => {
+    const {element: _drop, ...storableState} = state; // element is a DOM reference. Don't try to save it !
+    localStorage.setItem('component_editor', JSON.stringify(storableState));
+    return state;
+  },
+
+  [Actions.editComponent]: (state, action) => {
+    const id = action.id;
+    let newStates = {...state.states};
+
+    const oldId = state.active;
+    if (oldId) {
+      const oldComponentState = state.states[oldId];
+      newStates[oldId] = {...oldComponentState, active: false};
+    }
+
+    const oldComponentState = state.states[id];
+    newStates[id] = {...oldComponentState, active: true};
+
+    return {...state, active: id, states: newStates};
+  },
+
+  [Actions.cancelEdition]: (state, _action) => {
+    const id = state.active;
+    if (id) {
+      let newStates = {...state.states};
+      const oldComponentState = state.states[id];
+      newStates[id] = {...oldComponentState, active: false};
+      return {...state, active: null, element: null, states: newStates};
+    }
+    else {
+      return {...state, active: null, element: null};
+    }
+  }
+});
+
 function componentsReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case ActionTypes.LOAD: {
-      const savedState = localStorage.getItem('component_editor');
-      if (!savedState) {
-        return JSON.parse(HARDCODED_SAVED_DATA);
-      }
-
-      return JSON.parse(savedState);
-    }
-
-    case ActionTypes.SAVE: {
-      const {element: _drop, ...storableState} = state; // element is a DOM reference. Don't try to save it !
-      localStorage.setItem('component_editor', JSON.stringify(storableState));
-      return state;
-    }
-
-    case ActionTypes.EDIT_COMPONENT: {
-      const id = action.id;
-      let newStates = {...state.states};
-
-      const oldId = state.active;
-      if (oldId) {
-        const oldComponentState = state.states[oldId];
-        newStates[oldId] = {...oldComponentState, active: false};
-      }
-
-      const oldComponentState = state.states[id];
-      newStates[id] = {...oldComponentState, active: true};
-
-      return {...state, active: id, states: newStates};
-    }
-
-    case ActionTypes.CANCEL_EDITION: {
-      const id = state.active;
-      if (id) {
-        let newStates = {...state.states};
-        const oldComponentState = state.states[id];
-        newStates[id] = {...oldComponentState, active: false};
-        return {...state, active: null, element: null, states: newStates};
-      }
-      else {
-        return {...state, active: null, element: null};
-      }
-    }
-
     case ActionTypes.SET_PARAM_VALUE: {
       const id = action.id
       const newStates = {...state.states};
@@ -403,4 +404,4 @@ function componentsReducer(state = INITIAL_STATE, action) {
   }
 };
 
-export default componentsReducer;
+export default cascadeReducers(newReducer, componentsReducer);
