@@ -10,6 +10,7 @@ import Properties from './Properties';
 import './Text';
 import './Image';
 import './Layout';
+import './YoutubeVideo';
 
 const LangButton = ({lang}) => {
   const dispatch = useDispatch();
