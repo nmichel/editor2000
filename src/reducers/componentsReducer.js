@@ -326,6 +326,10 @@ export default createReducer(INITIAL_STATE, {
     }
 
     if (!canDrop) {
+      if (! currentId) {
+        return state; // No current drop target, just leave
+      }
+
       const oldComponentState = state.states[currentId];
       newStates[currentId] = {...oldComponentState, dropTarget: false};
       return {...state, dropTargetId: null, states: newStates};
