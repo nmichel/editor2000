@@ -45,7 +45,7 @@ const EditorFrame = ({component: name, id, active, style, dropTarget, ...rest}) 
     newStyle.background = 'rgba(255, 157, 100, 0.5)';
   }
 
-  return React.createElement(component, {...rest, style: newStyle, id: id, onClick: onClick, onDragOver: onDragOver, onDrop: onDrop, ref: setRef});
+  return React.createElement(component, {...rest, style: newStyle, active: active, id: id, onClick: onClick, onDragOver: onDragOver, onDrop: onDrop, ref: setRef});
 };
 
 export default EditorFrame;
