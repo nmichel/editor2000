@@ -1,12 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { registerComponent } from './registry';
+import styles from './YoutubeVideo.module.scss';
 
 const YOUTUBE_SRC = "https://www.youtube.com/iframe_api";
 
-const Youtube = React.forwardRef(({params, onClick, style, ...rest}, ref) => {
+const Youtube = React.forwardRef(({params, onClick, onDragOver, onDrop, style, active, ...rest}, ref) => {
+  const { t } = useTranslation();
+  const isDragging = useSelector((state) => state.components.dragging);
   const [sdkReady, setSdkReady] = useState(false);
   const playerRef = useRef();
-  let player = null;
+  // let player = null;
 
   useEffect(() => {
     if (document.querySelector(`script[src="${YOUTUBE_SRC}"]`)) {
@@ -27,38 +32,31 @@ const Youtube = React.forwardRef(({params, onClick, style, ...rest}, ref) => {
     if (!sdkReady) {
       return;
     }
-/*
-    player = new window.YT.Player(playerRef.current);
-    player.addEventListener("onStateChange", (event) => {
-      console.log('EVENT CODE', event.data);
-    });
-    */
+
+    // Currently this code is useEffect hook is useless, but it could be the place to take
+    // actions after the YT sdk is loaded.
+    //
+    // e.g.
+    // 
+    // player = new window.YT.Player(playerRef.current);
+    // player.addEventListener("onStateChange", (event) => {
+    //   console.log('EVENT CODE', event.data);
+    // });
   }, [sdkReady, playerRef]);
 
   const containerStyle = {
-    ...style,
     position: 'relative'
   }
 
-  const editbuttonStyle = {
-    position: 'absolute',
-    color: 'white'
+  const iframeStyle = {
+    ...style,
+    pointerEvents: (isDragging || active) ? 'none' : 'initial'
   }
 
   return (
     <div ref={ref} style={containerStyle} {...rest}>
-      <div style={editbuttonStyle} onClick={(event) => onClick(event)}>EDIT</div>
-      <iframe ref={playerRef} title="y" src="https://www.youtube.com/embed/9UaJAnnipkY?controls=0&enablejsapi=1" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-    </div>
-  );
-});
-
-const YoutubeEditor = React.forwardRef(({params, ...rest}, ref) => {
-  const playerRef = useRef();
-
-  return (
-    <div ref={ref} {...rest}>
-      <iframe ref={playerRef} title="y" src="https://www.youtube.com/embed/9UaJAnnipkY?controls=0&enablejsapi=1" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+      {!active && <div className={`${styles.EditBar}`} onClick={onClick} onDragOver={onDragOver} onDrop={onDrop}>{t('YoutubeVideo.click_to_edit')}</div>}
+      <iframe style={iframeStyle} ref={playerRef} title="y" src={params.url} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
     </div>
   );
 });
@@ -66,10 +64,13 @@ const YoutubeEditor = React.forwardRef(({params, ...rest}, ref) => {
 registerComponent({
   name: 'youtube',
   component: Youtube,
-  editor: YoutubeEditor,
+  onsite: [
+    ['url', 'text']
+  ],
   default: {
     component: 'youtube',
     params: {
+      url: 'https://www.youtube.com/embed/4OkSsFsXLD8?controls=0&enablejsapi=1'
     },
     style: {}
   }

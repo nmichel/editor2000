@@ -20,6 +20,10 @@ const frTranslations = {
   "Properties": {
     "select_component": "sélectionnez un composant",
     "title": "propriétés"
+  },
+
+  "YoutubeVideo": {
+    "click_to_edit": "Cliquer pour éditer"
   }
 };
   

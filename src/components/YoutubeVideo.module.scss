@@ -1,0 +1,12 @@
+@import "../style/variables.scss";
+
+.EditBar {
+  align-items: center;
+  background: rgba($edition-indicator-color, 0.8);
+  color: black;
+  display: flex;
+  height: 2em;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+}
