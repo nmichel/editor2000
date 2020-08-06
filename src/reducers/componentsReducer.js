@@ -13,7 +13,8 @@ const INITIAL_STATE = {
   states: {
     [id1]: {active: false, component: 'layout', params: {ids: []}, style: {display: 'flex', flexDirection: 'column', padding: '1em'}},
   },
-  dropTargetId: null
+  dropTargetId: null,
+  dragging: false
 };
 
 export default createReducer(INITIAL_STATE, {
@@ -304,6 +305,10 @@ export default createReducer(INITIAL_STATE, {
     return {...state, element: action.target};
   },
 
+  [Actions.startDrag]: (state, _action) => {
+    return {...state, dragging: true};
+  },
+
   [Actions.dragOver]: (state, action) => {
     if (action.id === state.dropTargetId) {
       // Drop target stays the same, do nothing
@@ -351,7 +356,7 @@ export default createReducer(INITIAL_STATE, {
     let dropTargetId = state.dropTargetId;
 
     if (!dropTargetId) {
-      return {...state, dropTargetId: null};
+      return {...state, dropTargetId: null, dragging: false};
     }
 
     const oldComponentState = state.states[dropTargetId];
@@ -360,7 +365,7 @@ export default createReducer(INITIAL_STATE, {
     // Find the target's parent 
     const targetParentId = oldComponentState.parent;
     if (!targetParentId) {
-      return {...state, dropTargetId: null};
+      return {...state, dropTargetId: null, dragging: false};
     }
 
     const movedId = state.active;
@@ -368,14 +373,14 @@ export default createReducer(INITIAL_STATE, {
     // Remove the moved node from its parent id list
     const movedParentId = state.states[movedId].parent;
     if (!movedParentId) {
-      return {...state, dropTargetId: null};
+      return {...state, dropTargetId: null, dragging: false};
     }
 
     const movedParent = state.states[movedParentId];
     const ids = movedParent.params.ids;
     const idx = ids.indexOf(movedId);
     if (idx === -1) {
-      return {...state, dropTargetId: null};
+      return {...state, dropTargetId: null, dragging: false};
     }
 
     const newIds = [...ids.slice(0, idx), ...ids.slice(idx+1)];
@@ -386,7 +391,7 @@ export default createReducer(INITIAL_STATE, {
     const targetParentIds = targetParent.params.ids
     const idx1 = targetParentIds.indexOf(dropTargetId)
     if (idx1 === -1) {
-      return {...state, dropTargetId: null};
+      return {...state, dropTargetId: null, dragging: false};
     }
 
     const newIds1 = [...targetParentIds.slice(0, idx1), movedId, ...targetParentIds.slice(idx1)];
@@ -396,6 +401,6 @@ export default createReducer(INITIAL_STATE, {
     const moved = state.states[movedId];
     newStates[movedId] = {...moved, parent: targetParentId};
 
-    return {...state, dropTargetId: null, states: newStates};
+    return {...state, dropTargetId: null, states: newStates, dragging: false};
   }
 });
