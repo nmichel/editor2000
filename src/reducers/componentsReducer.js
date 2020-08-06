@@ -186,14 +186,14 @@ export default createReducer(INITIAL_STATE, {
 
     let hasOrphans = true;
     while (hasOrphans) {
-      hasOrphans = false;
-      Object.keys(newStates).forEach((k) => {
+      hasOrphans = Object.keys(newStates).reduce((accIn, k) => {
         const componentState = newStates[k];
         if (k !== state.root && !newStates[componentState.parent]) {
-          hasOrphans = true;
           delete newStates[k];
+          return true;
         }
-      })
+        return accIn;
+      }, false);
     }
 
     return newState;
