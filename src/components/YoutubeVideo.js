@@ -56,7 +56,7 @@ const Youtube = React.forwardRef(({params, onClick, onDragOver, onDrop, style, a
   return (
     <div ref={ref} style={containerStyle} {...rest}>
       {!active && <div className={`${styles.EditBar}`} onClick={onClick} onDragOver={onDragOver} onDrop={onDrop}>{t('YoutubeVideo.click_to_edit')}</div>}
-      <iframe style={iframeStyle} ref={playerRef} title="y" src={params.url} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+      <iframe style={iframeStyle} ref={playerRef} title="y" src={`https://www.youtube.com/embed/${params.code}?controls=0&enablejsapi=1`} frameBorder="0" allow={`accelerometer; ${params.autoplay ? "autoplay" : ""}; encrypted-media; gyroscope; picture-in-picture`} allowFullScreen></iframe>
     </div>
   );
 });
@@ -65,12 +65,13 @@ registerComponent({
   name: 'youtube',
   component: Youtube,
   onsite: [
-    ['url', 'text']
+    ['code', 'text']
   ],
   default: {
     component: 'youtube',
     params: {
-      url: 'https://www.youtube.com/embed/4OkSsFsXLD8?controls=0&enablejsapi=1'
+      code: '4OkSsFsXLD8',
+      autoplay: false
     },
     style: {}
   }
