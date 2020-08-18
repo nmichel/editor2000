@@ -1,14 +1,57 @@
 .Properties {
-  background: white;
-  border: 1px solid;
+  background: rgba(#ffdea8, 0.8);
+  box-shadow: 8px 8px 16px #6e6457;
+  display: flex;
+  flex-direction: column;
   flex-shrink: 0;
-  height: 100%;
+  max-height: calc(100vh - 20px);
   margin-left: auto;
-  right: 0;
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  z-index: 2;
+}
+
+.LabelSelectComponent {
+  padding: 10px;
+  background: rgba(255, 157, 0, 0.8);
+}
+
+.PropertyList {
+  margin-bottom: 10px;
 }
 
 .PropertyEditor {
+  background-color: #ff9d00;
   display: flex;
   justify-content: flex-start;
-  margin: 10px 0;
+  margin: 0px 10px;
+  padding: 5px;
+
+  &:first-child {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  input {
+    margin-left: auto;
+  }
+}
+
+.PropertyAdder {
+  background-color: #ff9d00;
+  border-radius: 5px;
+  display: flex;
+  justify-content: flex-start;
+  margin: 10px 10px;
+  padding: 5px;
+}
+
+.hamburger_button {
+  align-self: flex-end;
 }

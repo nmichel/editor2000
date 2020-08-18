@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { FaHamburger, FaPlusCircle, FaTrashAlt } from 'react-icons/fa';
 import actions from '../actions';
 import styles from './Properties.module.scss';
+import commonStyle from './common.module.scss';
 
 const PropertyEditor = ({id, k, v}) => {
   const dispatch = useDispatch();
@@ -26,7 +28,7 @@ const PropertyEditor = ({id, k, v}) => {
     <div className={`${styles.PropertyEditor}`}>
       <span>{k}</span>
       <input value={value} onKeyPress={handleOnValidate} onChange={handleOnChange} />
-      <button onClick={deleteProperty}>X</button>
+      <button onClick={deleteProperty}><FaTrashAlt /></button>
     </div>
   );
 }
@@ -37,25 +39,27 @@ const PropertyList = ({id}) => {
   return (
     <div>
       <div>{id}</div>
-      <div>
+      <div className={`${styles.PropertyList}`}>
         {Object.entries(style).map(([k, v]) => {
           return <PropertyEditor key={`${id}_${k}`} id={id} k={k} v={v} />;
         })}
-        <AddPropertyPanel id={id} />
       </div>
+      <AddPropertyPanel id={id} />
     </div>
   );
 };
 
 const Properties = () => {
   const { t } = useTranslation();
+  const [showBar, setShowBar] = useState(true);
   const activeComponentId = useSelector((state) => state.components.active);
 //  <h1>{t("Properties.title")}</h1>
 
   return (
     <div className={styles.Properties}>
-      {activeComponentId && <PropertyList id={activeComponentId} />}
-      {!activeComponentId && <span>{t("Properties.select_component")}</span>}
+      <div className={`${commonStyle.toolbar_button} ${showBar ? commonStyle.rotate : ""} ${styles.hamburger_button}`}><FaHamburger onClick={() => setShowBar(!showBar)} /></div>
+      {showBar && activeComponentId && <PropertyList id={activeComponentId} />}
+      {showBar && !activeComponentId && <span className={`${styles.LabelSelectComponent}`}>{t("Properties.select_component")}</span>}
     </div>
   );
 };
@@ -70,10 +74,10 @@ const AddPropertyPanel = ({id}) => {
   }
 
   return (
-    <div>
+    <div className={`${styles.PropertyAdder}`}>
       <input value={property} onChange={(e) => setProperty(e.target.value)} />
       <input value={value} onChange={(e) => setValue(e.target.value)} />
-      <button onClick={addProperty}>Add</button>
+      <button onClick={addProperty}><FaPlusCircle/></button>
     </div>
   );
 }
