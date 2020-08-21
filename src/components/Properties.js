@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { FaHamburger, FaPlusCircle, FaTrashAlt } from 'react-icons/fa';
+import { FaPlusCircle, FaTrashAlt } from 'react-icons/fa';
 import actions from '../actions';
 import styles from './Properties.module.scss';
-import commonStyle from './common.module.scss';
 
 const PropertyEditor = ({id, k, v}) => {
   const dispatch = useDispatch();
@@ -51,15 +50,13 @@ const PropertyList = ({id}) => {
 
 const Properties = () => {
   const { t } = useTranslation();
-  const [showBar, setShowBar] = useState(true);
   const activeComponentId = useSelector((state) => state.components.active);
 //  <h1>{t("Properties.title")}</h1>
 
   return (
     <div className={styles.Properties}>
-      <div className={`${commonStyle.toolbar_button} ${showBar ? commonStyle.rotate : ""} ${styles.hamburger_button}`}><FaHamburger onClick={() => setShowBar(!showBar)} /></div>
-      {showBar && activeComponentId && <PropertyList id={activeComponentId} />}
-      {showBar && !activeComponentId && <span className={`${styles.LabelSelectComponent}`}>{t("Properties.select_component")}</span>}
+      {activeComponentId && <PropertyList id={activeComponentId} />}
+      {!activeComponentId && <span className={`${styles.LabelSelectComponent}`}>{t("Properties.select_component")}</span>}
     </div>
   );
 };

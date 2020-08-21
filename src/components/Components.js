@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {getOnsitePropsForName} from './registry';
-import Properties from './Properties';
+import ControlPanel from './ControlPanel';
 import EditorFrame from './EditorFrame';
 import Overlay from './Overlay';
 import Toolbar from './Toolbar';
@@ -61,7 +61,7 @@ const Components = () => {
         <ComponentOnsiteEditor refElement={componentEl} />
         {stateComponentsStatesRoot && <EditorFrame key={stateComponentsRoot} id={stateComponentsRoot} {...stateComponentsStatesRoot} />}
       </div>
-      <Properties />
+      <ControlPanel />
     </div>
   );
 };
