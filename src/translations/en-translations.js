@@ -20,6 +20,10 @@ const enTranslations = {
   "Properties": {
     "select_component": "pick a component",
     "title": "properties"
+  },
+
+  "YoutubeVideo": {
+    "click_to_edit": "click to edit"
   }
 };
 

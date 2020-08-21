@@ -23,7 +23,7 @@ const frTranslations = {
   },
 
   "YoutubeVideo": {
-    "click_to_edit": "Cliquer pour éditer"
+    "click_to_edit": "cliquer pour éditer"
   }
 };
   
