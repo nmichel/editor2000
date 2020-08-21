@@ -15,10 +15,13 @@ const Row = ({children}) => {
   );
 };
 
-const Group = ({children}) => {
+const Group = ({title = null, children}) => {
   return (
     <div className={`${styles.Group}`}>
-      {children}
+      {title && <div className={`${styles.GroupTitle}`}>{title}</div>}
+      <div className={`${styles.GroupContent}`}>
+        {children}
+      </div>
     </div>
   );
 };
@@ -86,7 +89,7 @@ const ControlPanel = () => {
             <Group>
               <Item><NewButton/></Item>
             </Group>
-            <Group>
+            <Group title="file">
               <Item><SaveButton/></Item>
               <Item><OpenButton/></Item>
             </Group>

@@ -13,8 +13,9 @@
 }
 
 .Row {
+  align-items: center;
   display: flex;
-  
+
   &:not(:last-child) {
     margin-bottom: 10px;
   }
@@ -23,14 +24,23 @@
 .Group {
   background-color: #ff9d00;
   border-radius: 5px;
-  display: flex;
-  justify-content: flex-start;
   margin: 0px 10px;
   padding: 5px;
 
   &:not(:last-child) {
     margin-right: 10px;
   }
+}
+
+.GroupTitle {
+  font-size: 9px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.GroupContent {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .Item {
