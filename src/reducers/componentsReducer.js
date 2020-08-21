@@ -18,6 +18,10 @@ const INITIAL_STATE = {
 };
 
 export default createReducer(INITIAL_STATE, {
+  [Actions.reset]: (_state, _action) => {
+    return INITIAL_STATE;
+  },
+
   [Actions.load]: (_state, _action) => {
     const savedState = localStorage.getItem('component_editor');
     const dataToLoad = savedState || HARDCODED_SAVED_DATA;

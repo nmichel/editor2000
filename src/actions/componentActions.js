@@ -1,6 +1,8 @@
 import * as ActionTypes from '../constants/action-types'; 
 import { createAction } from '../misc/reduxtils';
 
+const reset = createAction(ActionTypes.RESET);
+
 const load = createAction(ActionTypes.LOAD);
 
 const save = createAction(ActionTypes.SAVE);
@@ -107,6 +109,7 @@ const drop = createAction(ActionTypes.DROP, (id) => {
 });
 
 export default {
+  reset,
   load,
   save,
   editComponent,

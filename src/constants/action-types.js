@@ -1,3 +1,5 @@
+export const RESET = 'RESET';
+
 export const LOAD = 'LOAD';
 export const SAVE = 'SAVE';
 
