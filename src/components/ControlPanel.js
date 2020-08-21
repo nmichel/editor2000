@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { FaHamburger, FaSave, FaFolderOpen, FaFile } from 'react-icons/fa';
 import Properties from './Properties';
+import Tree from './Tree';
 import actions from '../actions';
 import commonStyle from './common.module.scss';
 import styles from './ControlPanel.module.scss';
@@ -96,7 +97,15 @@ const ControlPanel = () => {
           </Row>
 
           <Row>
-            <Properties />
+            <Group>
+              <Properties />
+            </Group>
+          </Row>
+
+          <Row>
+            <Group>
+              <Tree />
+            </Group>
           </Row>
         </>}
     </div>

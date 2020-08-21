@@ -1,0 +1,19 @@
+.Tree {
+  position: relative;
+}
+
+.Component {
+  align-items: flex-start;  
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.Subcomponents {
+  position: relative;
+  margin-left: 20px;
+}
+
+.active {
+  color: red;
+}
