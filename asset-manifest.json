@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/editor2000/static/css/main.516ca060.chunk.css",
+    "main.js": "/editor2000/static/js/main.8cc85e4d.chunk.js",
+    "main.js.map": "/editor2000/static/js/main.8cc85e4d.chunk.js.map",
+    "runtime-main.js": "/editor2000/static/js/runtime-main.2a077b68.js",
+    "runtime-main.js.map": "/editor2000/static/js/runtime-main.2a077b68.js.map",
+    "static/js/2.6760cd58.chunk.js": "/editor2000/static/js/2.6760cd58.chunk.js",
+    "static/js/2.6760cd58.chunk.js.map": "/editor2000/static/js/2.6760cd58.chunk.js.map",
+    "index.html": "/editor2000/index.html",
+    "precache-manifest.95f34eb258a1b426d74ff32102bcac0c.js": "/editor2000/precache-manifest.95f34eb258a1b426d74ff32102bcac0c.js",
+    "service-worker.js": "/editor2000/service-worker.js",
+    "static/css/main.516ca060.chunk.css.map": "/editor2000/static/css/main.516ca060.chunk.css.map",
+    "static/js/2.6760cd58.chunk.js.LICENSE.txt": "/editor2000/static/js/2.6760cd58.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2a077b68.js",
+    "static/js/2.6760cd58.chunk.js",
+    "static/css/main.516ca060.chunk.css",
+    "static/js/main.8cc85e4d.chunk.js"
+  ]
+}
