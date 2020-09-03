@@ -1,0 +1,18 @@
+.common {
+  border: 1px solid;
+}
+
+.Selector {
+  composes: common;
+}
+
+.List {
+  composes: common;
+
+  max-height: 8em;
+  overflow: scroll;
+}
+
+.ListItem {
+  composes: common;
+}

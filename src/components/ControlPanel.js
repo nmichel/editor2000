@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { FaHamburger, FaSave, FaFolderOpen, FaFile } from 'react-icons/fa';
 import Properties from './Properties';
+import Selector from './Selector';
 import Tree from './Tree';
 import actions from '../actions';
+import Store from '../misc/localstorage';
 import commonStyle from './common.module.scss';
 import styles from './ControlPanel.module.scss';
 
@@ -78,21 +80,41 @@ const NewButton = () => {
 };
 
 const ControlPanel = () => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const [showBar, setShowBar] = useState(true);
+  const filenames = Store.listFilenames();
+
+  const loadFile = (filename) => {
+    console.log(`LOAD FILE ${filename}`);
+    dispatch(actions.component.load(filename))
+  }
+
+  const saveFile = (filename) => {
+    console.log(`SAVE TO FILE ${filename}`);
+    dispatch(actions.component.save(filename))
+  }
 
   return (
     <div className={`${styles.ControlPanel}`}>
       <div className={`${commonStyle.toolbar_button} ${showBar ? commonStyle.rotate : ""} ${styles.hamburger_button}`}><FaHamburger onClick={() => setShowBar(!showBar)} /></div>
       {showBar &&
         <>
+          LOAD :
+          <Selector list={filenames} onSelect={loadFile} onCancel={() => {}} />
+
+          SAVE :
+          <Selector list={filenames} onSelect={saveFile} onCancel={() => {}} />
+
           <Row>
             <Group>
               <Item><NewButton/></Item>
             </Group>
             <Group title="file">
+            {/*
               <Item><SaveButton/></Item>
               <Item><OpenButton/></Item>
+            */}
             </Group>
           </Row>
 

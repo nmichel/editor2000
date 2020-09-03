@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Actions from '../actions/componentActions';
 import { getDefaultParamsForName } from '../components/registry';
 import { createReducer } from '../misc/reduxtils';
-import HARDCODED_SAVED_DATA from './movies';
+import Store from '../misc/localstorage';
 
 const id1 = uuidv4();
 
@@ -22,15 +22,15 @@ export default createReducer(INITIAL_STATE, {
     return INITIAL_STATE;
   },
 
-  [Actions.load]: (_state, _action) => {
-    const savedState = localStorage.getItem('component_editor');
-    const dataToLoad = savedState || HARDCODED_SAVED_DATA;
-    return JSON.parse(dataToLoad);
+  [Actions.load]: (_state, { filename }) => {
+    // TODO error handling
+    return Store.loadFromFile(filename);
   },
 
-  [Actions.save]: (state, _action) => {
+  [Actions.save]: (state, { filename }) => {
     const {element: _drop, ...storableState} = state; // element is a DOM reference. Don't try to save it !
-    localStorage.setItem('component_editor', JSON.stringify(storableState));
+    // TODO error handling
+    Store.saveToFile(filename, storableState);
     return state;
   },
 

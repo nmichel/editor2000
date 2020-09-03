@@ -3,9 +3,17 @@ import { createAction } from '../misc/reduxtils';
 
 const reset = createAction(ActionTypes.RESET);
 
-const load = createAction(ActionTypes.LOAD);
+const load = createAction(ActionTypes.LOAD, (filename) => {
+  return {
+    filename
+  }
+});
 
-const save = createAction(ActionTypes.SAVE);
+const save = createAction(ActionTypes.SAVE, (filename) => {
+  return {
+    filename
+  }
+});
 
 const editComponent = createAction(ActionTypes.EDIT_COMPONENT, (id) => {
   return { 
