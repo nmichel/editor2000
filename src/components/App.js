@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import actions from '../actions';
 import styles from "./App.module.scss";
 import Components from './Components';
+import ModalStack from './Modal';
 
 import './Text';
 import './Image';
@@ -43,10 +44,12 @@ function App() {
   }, [i18n, lang]);
 
   return (
-    <div className={styles.App}>
-      {/*<LangSelector />*/}
-      <Components />
-    </div>
+    <ModalStack>
+      <div className={styles.App}>
+        {/*<LangSelector />*/}
+        <Components />
+      </div>
+    </ModalStack>
   );
 }
 
