@@ -1,5 +1,7 @@
+@import '../style/variables.scss';
+
 .ControlPanel {
-  background: rgba(#ffdea8, 0.8);
+  background: rgba($background-color, 0.8);
   box-shadow: 8px 8px 16px #6e6457;
   display: flex;
   flex-direction: column;
@@ -23,7 +25,7 @@
 }
 
 .Group {
-  background-color: #ff9d00;
+  background-color: $edition-indicator-color;
   border-radius: 5px;
   margin: 0px 10px;
   padding: 5px;

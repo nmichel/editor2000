@@ -1,18 +1,50 @@
-.common {
-  border: 1px solid;
-}
+@import "../style/variables.scss";
 
 .Selector {
-  composes: common;
+  background-color: $edition-indicator-color;
+  border: 1px solid;
+  min-width: 300px;
+  padding: 1em;
 }
 
 .List {
-  composes: common;
-
+  border: 1px solid;
   max-height: 8em;
   overflow: scroll;
+  padding: 0.5em;
 }
 
 .ListItem {
-  composes: common;
+  padding: 0.2em;
+
+  &:nth-child(odd) {
+    background-color: lighten($edition-indicator-color, 40%);
+  }
+
+  &:nth-child(even) {
+    background-color: lighten($edition-indicator-color, 45%);
+  }
+
+  &.active {
+    background-color: $edition-indicator-color;
+  }
+}
+
+.SelectFileBar {
+  display: flex;
+  margin-top: 1em;
+
+  input {
+    margin-left: 1em;
+  }
+}
+
+.ButtonBar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1em;
+
+  div:not(:first-child) {
+    margin-left: 1em;
+  }
 }
