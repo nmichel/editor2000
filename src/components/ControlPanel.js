@@ -1,12 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { FaHamburger, FaSave, FaFolderOpen, FaFile } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
 import Properties from './Properties';
 import Selector from './Selector';
+import ConfirmDialog from './ConfirmDialog';
 import Tree from './Tree';
-import { ModalContext } from './Modal';
+import { useStack } from './Modal';
 import actions from '../actions';
 import Store from '../misc/localstorage';
 import commonStyle from './common.module.scss';
@@ -41,22 +42,28 @@ const Item = ({children}) => {
 
 const SaveButton = () => {
   const dispatch = useDispatch();
-  const { push, pop } = useContext(ModalContext);
+  const [push, pop] = useStack();
+  const [saveToFilename, setSaveToFilename] = useState(null);
 
-  const filenames = Store.listFilenames();
-  const saveFile = (filename) => {
+  const confirmSaveFile = () => {
     pop();
-    dispatch(actions.component.save(filename))
+    pop();
+    saveToFilename && dispatch(actions.component.save(saveToFilename));
   }
 
-  const component = () => <Selector list={filenames} onSelect={saveFile} onCancel={() => pop()} />
+  const confirmDialogComponent = () => <ConfirmDialog text={"confirm"} onConfirm={confirmSaveFile} onCancel={() => pop()} />
 
-  const onClick = () => {
-    push(component);
-  };
+  const setFilenameToSave = (filename) => {
+    setSaveToFilename(filename);
+    push(confirmDialogComponent);
+  }
+
+  const filenames = Store.listFilenames();
+  const selectorComponent = () => <Selector list={filenames} onSelect={setFilenameToSave} onCancel={() => pop()} />
+  const showSelectorDialog = () => push(selectorComponent);
 
   return (
-    <div className={`${styles.Button}`} onClick={onClick}>
+    <div className={`${styles.Button}`} onClick={showSelectorDialog}>
       <FaSave />
     </div>
   );
@@ -64,7 +71,7 @@ const SaveButton = () => {
 
 const OpenButton = () => {
   const dispatch = useDispatch();
-  const { push, pop } = useContext(ModalContext);
+  const [push, pop] = useStack();
 
   const filenames = Store.listFilenames();
   const loadFile = (filename) => {

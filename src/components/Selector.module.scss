@@ -1,13 +1,13 @@
 @import "../style/variables.scss";
 
 .Selector {
-  background-color: $edition-indicator-color;
   border: 1px solid;
   min-width: 300px;
   padding: 1em;
 }
 
 .List {
+  background-color: white;
   border: 1px solid;
   max-height: 8em;
   overflow: scroll;
@@ -47,4 +47,8 @@
   div:not(:first-child) {
     margin-left: 1em;
   }
+}
+
+.Button {
+  background-color: $edition-indicator-color;
 }

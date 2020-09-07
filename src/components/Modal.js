@@ -1,28 +1,24 @@
-import React, { useState } from 'react';
-import { noop } from '../misc/utils';
+import React, { useState, useContext } from 'react';
 import styles from './Modal.module.scss';
 
-const ModalContext = React.createContext({
-  push: noop,
-  pop: noop
-});
+const ModalContext = React.createContext({ push: undefined, pop: undefined });
+ModalContext.displayName = 'ModalContext';
 
 const ModalStack = ({children}) => {
   const [modals, setModals] = useState([]);
 
   const push = (modal) => {
-    setModals([modal, ...modals])
+    setModals((prevModals ) => [modal, ...prevModals]);
   };
 
   const pop = () => {
-    const [_head, ...tail] = modals; 
-    setModals(tail);
+    setModals(([_head, ...tail]) => [...tail]);
   };
 
   const actions = {
     push,
     pop
-  }
+  };
 
   const renderModals = () => {
     if (modals.length > 0) {
@@ -33,9 +29,7 @@ const ModalStack = ({children}) => {
         </div>
       );
     }
-
-    return null;
-  }
+  };
 
   return (
     <ModalContext.Provider value={actions}>
@@ -45,4 +39,9 @@ const ModalStack = ({children}) => {
   );
 };
 
-export { ModalStack as default, ModalContext };
+const useStack = () => {
+  const actions = useContext(ModalContext);
+  return [actions.push, actions.pop];
+}
+
+export { ModalStack as default, useStack };

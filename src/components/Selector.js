@@ -23,8 +23,8 @@ const Selector = ({list, onSelect, onCancel}) => {
       </div>
 
       <div className={`${styles.ButtonBar}`}>
-        <div onClick={() => onSelect(selected)}>Select</div>
-        <div onClick={onCancel}>Cancel</div>
+        <div className={`${styles.Button}`} onClick={() => onSelect(selected)}>Select</div>
+        <div className={`${styles.Button}`} onClick={onCancel}>Cancel</div>
       </div>
     </div>
   );

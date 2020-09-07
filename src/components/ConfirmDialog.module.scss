@@ -1,0 +1,18 @@
+@import '../style/variables.scss';
+
+.ConfigDialog {
+}
+
+.ButtonBar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1em;
+
+  div:not(:first-child) {
+    margin-left: 1em;
+  }
+}
+
+.Button {
+  background-color: $edition-indicator-color;
+}
