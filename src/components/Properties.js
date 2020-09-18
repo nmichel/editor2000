@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { FaPlusCircle, FaTrashAlt } from 'react-icons/fa';
+import { FaPlusCircle, FaTrashAlt, FaEye, FaEyeSlash } from 'react-icons/fa';
 import actions from '../actions';
 import styles from './Properties.module.scss';
 
-const PropertyEditor = ({id, k, v}) => {
+const PropertyEditor = ({id, k, v, active}) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState(v);
 
@@ -23,14 +23,35 @@ const PropertyEditor = ({id, k, v}) => {
     dispatch(actions.component.deleteStyle(id, k));
   }
 
+  const togglePropState = () => {
+    dispatch(actions.component.setStyleState(id, k, !active));
+  }
+
+  const renderInputField = () => {
+    if (active) {
+      return <input value={value} onKeyPress={handleOnValidate} onChange={handleOnChange} />;
+    }
+    else {
+      return <input disabled={true} value={value} />;
+    }
+  }
+
   return (
     <div className={`${styles.PropertyEditor}`}>
+      <Toggle active={active} onToggle={togglePropState} />
       <span>{k}</span>
-      <input value={value} onKeyPress={handleOnValidate} onChange={handleOnChange} />
+      {renderInputField()}
       <button onClick={deleteProperty}><FaTrashAlt /></button>
     </div>
   );
 }
+
+const Toggle = ({active, onToggle}) => {
+  const Component = active ? FaEye : FaEyeSlash;
+  return (
+    <Component onClick={onToggle}>click</Component>
+  );
+};
 
 const PropertyList = ({id}) => {
   const style = useSelector((state) => state.components.states[id].style);
@@ -39,8 +60,8 @@ const PropertyList = ({id}) => {
     <div>
       <div>{id}</div>
       <div className={`${styles.PropertyList}`}>
-        {Object.entries(style).map(([k, v]) => {
-          return <PropertyEditor key={`${id}_${k}`} id={id} k={k} v={v} />;
+        {Object.entries(style).map(([k, {active, value}]) => {
+          return <PropertyEditor key={`${id}_${k}`} id={id} k={k} v={value} active={active} />;
         })}
       </div>
       <AddPropertyPanel id={id} />

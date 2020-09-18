@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   element: null,
   root: id1,
   states: {
-    [id1]: {active: false, component: 'layout', params: {ids: []}, style: {display: 'flex', flexDirection: 'column', padding: '1em'}},
+    [id1]: {active: false, component: 'layout', params: {ids: []}, style: {display: {active: true, value: 'flex'}, flexDirection: {active: true, value: 'column'}, padding: {active: true, value: '1em'}}},
   },
   dropTargetId: null,
   dragging: false
@@ -79,7 +79,24 @@ export default createReducer(INITIAL_STATE, {
     const newStates = newState.states;
     const params = action.payload.params;
     const oldStyle = newStates[id].style;
-    const newStyle = {...oldStyle, [params.property]: params.value};
+    const oldProperty = oldStyle[params.property];
+    const newStyle = {...oldStyle, [params.property]: {...oldProperty, value: params.value}};
+
+    newStates[id] = {
+      ...newStates[id],
+      style: newStyle
+    }
+    return newState;
+  },
+
+  [Actions.setStyleState]: (state, action) => {
+    const id = action.id
+    const newState = {...state, states: {...state.states}};
+    const newStates = newState.states;
+    const params = action.payload.params;
+    const oldStyle = newStates[id].style;
+    const oldProperty = oldStyle[params.property];
+    const newStyle = {...oldStyle, [params.property]: {...oldProperty, active: params.active}};
 
     newStates[id] = {
       ...newStates[id],
@@ -94,7 +111,7 @@ export default createReducer(INITIAL_STATE, {
     const newStates = newState.states;
     const params = action.payload.params;
     const oldStyle = newStates[id].style;
-    const newStyle = {...oldStyle, [params.property]: params.value};
+    const newStyle = {...oldStyle, [params.property]: {active: true, value: params.value}};
 
     newStates[id] = {
       ...newStates[id],

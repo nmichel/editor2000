@@ -37,6 +37,13 @@ const setStyleValue = createAction(ActionTypes.SET_STYLE_VALUE, (id, property, v
   }
 });
 
+const setStyleState = createAction(ActionTypes.SET_STYLE_STATE, (id, property, active) => {
+  return {
+    id,
+    payload: { params: { property, active } }
+  }
+});
+
 const addStyle = createAction(ActionTypes.ADD_STYLE, (id, property, value) => {
   return {
     id,
@@ -124,6 +131,7 @@ export default {
   cancelEdition,
   setParamValue,
   setStyleValue,
+  setStyleState,
   addStyle,
   deleteStyle,
   appendComponent,

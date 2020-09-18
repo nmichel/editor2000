@@ -11,6 +11,7 @@ export const EDIT_COMPONENT = 'EDIT_COMPONENT';
 export const CANCEL_EDITION = 'CANCEL_EDITION';
 
 export const SET_STYLE_VALUE = 'SET_STYLE_VALUE';
+export const SET_STYLE_STATE = 'SET_STYLE_STATE';
 export const ADD_STYLE = 'ADD_STYLE';
 export const DELETE_STYLE = 'DELETE_STYLE';
 

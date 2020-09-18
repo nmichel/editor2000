@@ -36,9 +36,9 @@ registerComponent({
       ids: []
     },
     style: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column'
+      alignItems: {active: true, value: 'center'},
+      display: {active: true, value: 'flex'},
+      flexDirection: {active: true, value: 'column'}
     }
   }
 });

@@ -38,8 +38,8 @@ const EditorFrame = ({component: name, id, active, style, dropTarget, ...rest}) 
     event.stopPropagation();
     dispatch(actions.component.drop(id));
   }
-  
-  let newStyle = {...style};
+
+  let newStyle = Object.entries(style).reduce((accIn, [key, {active, value}]) => (active ? {...accIn, [key]: value} : accIn), {});
 
   if (dropTarget) {
     newStyle.background = 'rgba(255, 157, 100, 0.5)';
