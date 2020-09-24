@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/editor2000/static/css/main.a1931dc2.chunk.css",
-    "main.js": "/editor2000/static/js/main.5200d83f.chunk.js",
-    "main.js.map": "/editor2000/static/js/main.5200d83f.chunk.js.map",
+    "main.js": "/editor2000/static/js/main.e95d3698.chunk.js",
+    "main.js.map": "/editor2000/static/js/main.e95d3698.chunk.js.map",
     "runtime-main.js": "/editor2000/static/js/runtime-main.2a077b68.js",
     "runtime-main.js.map": "/editor2000/static/js/runtime-main.2a077b68.js.map",
-    "static/js/2.a56bdca0.chunk.js": "/editor2000/static/js/2.a56bdca0.chunk.js",
-    "static/js/2.a56bdca0.chunk.js.map": "/editor2000/static/js/2.a56bdca0.chunk.js.map",
+    "static/js/2.9330a026.chunk.js": "/editor2000/static/js/2.9330a026.chunk.js",
+    "static/js/2.9330a026.chunk.js.map": "/editor2000/static/js/2.9330a026.chunk.js.map",
     "index.html": "/editor2000/index.html",
-    "precache-manifest.b34acbabe72118bd3158f5b5382977d9.js": "/editor2000/precache-manifest.b34acbabe72118bd3158f5b5382977d9.js",
+    "precache-manifest.292a7d3ecc99e355a8f0ded584a82b2f.js": "/editor2000/precache-manifest.292a7d3ecc99e355a8f0ded584a82b2f.js",
     "service-worker.js": "/editor2000/service-worker.js",
     "static/css/main.a1931dc2.chunk.css.map": "/editor2000/static/css/main.a1931dc2.chunk.css.map",
-    "static/js/2.a56bdca0.chunk.js.LICENSE.txt": "/editor2000/static/js/2.a56bdca0.chunk.js.LICENSE.txt"
+    "static/js/2.9330a026.chunk.js.LICENSE.txt": "/editor2000/static/js/2.9330a026.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.2a077b68.js",
-    "static/js/2.a56bdca0.chunk.js",
+    "static/js/2.9330a026.chunk.js",
     "static/css/main.a1931dc2.chunk.css",
-    "static/js/main.5200d83f.chunk.js"
+    "static/js/main.e95d3698.chunk.js"
   ]
 }
