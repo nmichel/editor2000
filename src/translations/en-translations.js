@@ -1,4 +1,8 @@
 const enTranslations = {
+  "CopyPaste": {
+    "title": "copy/paste"
+  },
+
   "Editor": {
     "title": "editor"
   },

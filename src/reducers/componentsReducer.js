@@ -14,8 +14,28 @@ const INITIAL_STATE = {
     [id1]: {active: false, component: 'layout', params: {ids: []}, style: {display: {active: true, value: 'flex'}, flexDirection: {active: true, value: 'column'}, padding: {active: true, value: '1em'}}},
   },
   dropTargetId: null,
-  dragging: false
+  dragging: false,
+  sourceComponentId: null
 };
+
+function cloneComponentState(id, parentId, states) {
+  // TODO : Should rely upon a clone protocol, implemented for each component type
+  // ... Something more change-proof, elegant and polymorphic than this crude "if programming" piece of sh*t
+  // (the same applies to the whole software :) )
+
+  const componentCloneId = uuidv4();
+
+  const componentState = states[id];
+  const componentCloneState = {...componentState, parent: parentId, params: {...componentState.params}};
+
+  if (componentState.params.ids) {
+    componentCloneState.params.ids = componentState.params.ids.map((child_id) => cloneComponentState(child_id, componentCloneId, states));
+  }
+
+  states[componentCloneId] = componentCloneState;
+
+  return componentCloneId;
+}
 
 export default createReducer(INITIAL_STATE, {
   [Actions.reset]: (_state, _action) => {
@@ -216,6 +236,46 @@ export default createReducer(INITIAL_STATE, {
         }
         return accIn;
       }, false);
+    }
+
+    return newState;
+  },
+
+  [Actions.copyComponent]: (state, _action) => {
+    const sourceComponentId = state.active
+    if (!sourceComponentId) {
+      return state;
+    }
+
+    return {...state, sourceComponentId}
+  },
+
+  [Actions.pasteComponent]: (state, _action) => {
+    const targetComponentId = state.active
+    const sourceComponentId = state.sourceComponentId
+    if (!sourceComponentId || !targetComponentId) {
+      return state;
+    }
+    
+    const parentId = state.states[targetComponentId].parent;
+    if (!parentId) {
+      return state;
+    }
+
+    const newState = {...state, states: {...state.states}};
+    const newStates = newState.states;
+
+    const parent = state.states[parentId];
+    const ids = parent.params.ids;
+    const idx = ids.indexOf(targetComponentId);
+
+    const sourceCloneId = cloneComponentState(sourceComponentId, parentId, newStates);
+
+    const newParentIds = [...newStates[parentId].params.ids];
+    newParentIds.splice(idx+1, 0, sourceCloneId);
+    newStates[parentId] = {
+      ...newStates[parentId],
+      params: {ids: newParentIds}
     }
 
     return newState;

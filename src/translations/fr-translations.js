@@ -1,4 +1,8 @@
 const frTranslations = {
+  "CopyPaste": {
+    "title": "copier/coller"
+  },
+
   "Editor": {
     "title": "editeur"
   },

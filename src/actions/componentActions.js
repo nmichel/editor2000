@@ -79,6 +79,10 @@ const deleteComponent = createAction(ActionTypes.DELETE_COMPONENT, (id, name) =>
   }
 });
 
+const copyComponent = createAction(ActionTypes.COPY_COMPONENT);
+
+const pasteComponent = createAction(ActionTypes.PASTE_COMPONENT);
+
 const navigatePrev = createAction(ActionTypes.NAVIGATE_PREV, (id) => {
   return {
     id
@@ -137,6 +141,8 @@ export default {
   appendComponent,
   prependComponent,
   deleteComponent,
+  copyComponent,
+  pasteComponent,
   navigatePrev,
   navigateNext,
   navigateUp,

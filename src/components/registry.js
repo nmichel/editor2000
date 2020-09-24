@@ -1,6 +1,7 @@
 import Cross from '../components/controls/Cross';
 import Delete from '../components/controls/Delete';
 import Navigator from '../components/controls/Navigator';
+import CopyPaste from '../components/controls/CopyPaste';
 
 const components = {};
 window.components = components;
@@ -8,7 +9,7 @@ window.components = components;
 const registerComponent = (declaration) => {
   const {name, ...props} = declaration;
   let {controls = [], ...rest} = props;
-  controls = [Navigator, Delete, Cross, ...controls];
+  controls = [Navigator, CopyPaste, Delete, Cross, ...controls];
 
   components[name] = {controls, ...rest};
 };
